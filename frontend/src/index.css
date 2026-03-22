@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Modern Medical Palette (Blue/Teal/Slate) */
+    --primary-light: 210 100% 96%;
+    /* #E0F2FE */
+    --primary: 217 91% 60%;
+    /* #3B82F6 (Blue 500) */
+    --primary-dark: 224 76% 48%;
+    /* #1D4ED8 (Blue 700) */
+
+    --secondary-light: 173 80% 90%;
+    /* #CCFBF1 */
+    --secondary: 173 80% 40%;
+    /* #14B8A6 (Teal 500) */
+    --secondary-dark: 176 61% 19%;
+    /* #115E59 (Teal 800) */
+
+    --accent-light: 25 100% 92%;
+    /* #FFEDD5 */
+    --accent: 27 96% 61%;
+    /* #F97316 (Orange 500) */
+    --accent-dark: 24 80% 40%;
+    /* #C2410C (Orange 700) */
+
+    --background: 210 40% 98%;
+    /* #F8FAFC (Slate 50) */
+    --surface: 0 0% 100%;
+    /* #FFFFFF */
+
+    --text-primary: 215 28% 17%;
+    /* #1E293B (Slate 800) */
+    --text-secondary: 215 16% 47%;
+    /* #64748B (Slate 500) */
+
+    --success: 142 71% 45%;
+    /* #22C55E */
+    --warning: 38 92% 50%;
+    /* #EAB308 */
+    --error: 0 84% 60%;
+    /* #EF4444 */
+  }
+
+  body {
+    @apply bg-background text-text-primary font-sans antialiased;
+    background-image:
+      radial-gradient(at 0% 0%, hsla(217, 91%, 60%, 0.1) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, hsla(173, 80%, 40%, 0.1) 0px, transparent 50%);
+    background-attachment: fixed;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-slate-300 rounded-full hover:bg-slate-400 transition-colors;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-glass rounded-xl;
+  }
+
+  .glass-button {
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-300 bg-gradient-to-r from-primary to-primary-dark text-white hover:shadow-lg hover:scale-[1.02] active:scale-[0.98];
+  }
+
+  .input-field {
+    @apply w-full px-4 py-2 rounded-lg border border-slate-200 bg-white/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent transition-all duration-200;
+  }
+}
