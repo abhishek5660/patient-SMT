@@ -21,16 +21,16 @@ app.use(helmet({ crossOriginResourcePolicy: false }));
 // Routes
 const authRoutes = require('./routes/authRoutes');
 
-app.use('/https://patient-smt-backend.onrender.com/auth', authRoutes);
-app.use('/https://patient-smt-backend.onrender.com/appointments', require('./routes/appointmentRoutes'));
-app.use('/https://patient-smt-backend.onrender.com/users', require('./routes/userRoutes'));
-app.use('/https://patient-smt-backend.onrender.com/medical-records', require('./routes/medicalRecordRoutes'));
-app.use('/https://patient-smt-backend.onrender.com/payments', require('./routes/paymentRoutes'));
-app.use('/https://patient-smt-backend.onrender.com/invoices', require('./routes/invoiceRoutes'));
-app.use('/https://patient-smt-backend.onrender.com/reports', require('./routes/reportRoutes'));
-app.use('/https://patient-smt-backend.onrender.com/prescriptions', require('./routes/prescriptionRoutes'));
-app.use('/https://patient-smt-backend.onrender.com/doctor', require('./routes/doctorRoutes'));
-app.use('/https://patient-smt-backend.onrender.com/admin', require('./routes/adminRoutes'));
+app.use('/api/auth', authRoutes);
+app.use('/api/appointments', require('./routes/appointmentRoutes'));
+app.use('/api/users', require('./routes/userRoutes'));
+app.use('/api/medical-records', require('./routes/medicalRecordRoutes'));
+app.use('/api/payments', require('./routes/paymentRoutes'));
+app.use('/api/invoices', require('./routes/invoiceRoutes'));
+app.use('/api/reports', require('./routes/reportRoutes'));
+app.use('/api/prescriptions', require('./routes/prescriptionRoutes'));
+app.use('/api/doctor', require('./routes/doctorRoutes'));
+app.use('/api/admin', require('./routes/adminRoutes'));
 
 // Serve uploads folder
 const path = require('path');
