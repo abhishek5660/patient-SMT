@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -26,27 +26,6 @@ const userSchema = new mongoose.Schema({
         enum: ['patient', 'doctor', 'admin'],
         default: 'patient'
     },
-    // Doctor specific fields
-    specialization: {
-        type: String
-    },
-    department: {
-        type: String
-    },
-    qualifications: {
-        type: [String]
-    },
-    experience: {
-        type: Number
-    },
-    fees: {
-        type: Number
-    },
-    availableSlots: [{
-        day: String,
-        startTime: String,
-        endTime: String
-    }],
     isApproved: { // For doctors
         type: Boolean,
         default: false
@@ -55,15 +34,8 @@ const userSchema = new mongoose.Schema({
     bloodGroup: {
         type: String
     },
-    gender: {
-        type: String,
-        enum: ['Male', 'Female', 'Other']
-    },
     dob: {
         type: Date
-    },
-    address: {
-        type: String
     },
     phone: {
         type: String
@@ -100,6 +72,11 @@ const userSchema = new mongoose.Schema({
     consultationFee: {
         type: Number
     },
+    availableSlots: [{
+        day: String,
+        startTime: String,
+        endTime: String
+    }],
     availabilitySchedule: {
         type: [String], // e.g., ["Mon: 10am-2pm", "Wed: 4pm-8pm"]
         default: []
