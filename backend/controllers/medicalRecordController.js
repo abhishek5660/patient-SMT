@@ -1,4 +1,6 @@
 const MedicalRecord = require('../models/MedicalRecord');
+const { createNotification } = require('./notificationController');
+const User = require('../models/User');
 
 // @desc    Get medical records for a patient
 // @route   GET /api/medical-records/:patientId
@@ -43,6 +45,15 @@ exports.addMedicalRecord = async (req, res) => {
             description,
             vitalSigns
         });
+
+        // Notify Patient
+        const doctor = await User.findById(req.user.id);
+        await createNotification(
+            patientId,
+            'Medical Record Updated',
+            `Dr. ${doctor.name} has added a new medical record with diagnosis: ${diagnosis}.`,
+            'info'
+        );
 
         res.status(201).json({
             success: true,

@@ -1,4 +1,6 @@
 const Prescription = require('../models/Prescription');
+const { createNotification } = require('./notificationController');
+const User = require('../models/User');
 
 // @desc    Get my prescriptions
 // @route   GET /api/prescriptions
@@ -37,6 +39,15 @@ exports.addPrescription = async (req, res) => {
             medicines,
             notes
         });
+
+        // Notify Patient
+        const doctor = await User.findById(req.user.id);
+        await createNotification(
+            patientId,
+            'New Prescription Added',
+            `Dr. ${doctor.name} has added a new prescription for you. Please check your dashboard.`,
+            'success'
+        );
 
         res.status(201).json({
             success: true,

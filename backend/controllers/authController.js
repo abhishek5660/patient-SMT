@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const { createNotification } = require('./notificationController');
 
 // Generate JWT
 const generateToken = (id) => {
@@ -32,6 +33,14 @@ exports.register = async (req, res) => {
         });
 
         if (user) {
+            // Create Welcome Notification
+            await createNotification(
+                user._id,
+                'Welcome to MedCare!',
+                `Hello ${user.name}, welcome to MedCare. You can now book appointments and see your records.`,
+                'info'
+            );
+
             res.status(201).json({
                 _id: user.id,
                 name: user.name,
