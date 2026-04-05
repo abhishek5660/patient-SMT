@@ -102,10 +102,10 @@ const AdminLayout = ({ children }) => {
                             <Shield className="text-white w-6 h-6" />
                         </motion.div>
                         <motion.div variants={textVariants} className="flex flex-col min-w-max">
-                            <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600">
+                            <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600 block">
                                 Medi Care
                             </span>
-                            <span className="text-[10px] font-bold text-primary tracking-[0.2em] uppercase">
+                            <span className="text-[10px] font-bold text-primary tracking-[0.2em] uppercase block">
                                 Super Admin
                             </span>
                         </motion.div>
