@@ -61,9 +61,9 @@ exports.getAppointments = async (req, res) => {
     }
 };
 
-// @desc    Update appointment status
+// @desc    Update appointment status/details
 // @route   PUT /api/appointments/:id
-// @access  Private/Doctor/Admin
+// @access  Private
 exports.updateAppointmentStatus = async (req, res) => {
     try {
         let appointment = await Appointment.findById(req.params.id);
@@ -72,9 +72,32 @@ exports.updateAppointmentStatus = async (req, res) => {
             return res.status(404).json({ success: false, message: 'Appointment not found' });
         }
 
-        // Verify ownership (if doctor)
-        if (req.user.role === 'doctor' && appointment.doctor.toString() !== req.user.id) {
+        const isUserPatient = req.user.role === 'patient';
+        const isUserDoctor = req.user.role === 'doctor';
+        const isUserAdmin = req.user.role === 'admin';
+
+        // Ownership checks
+        if (isUserPatient && appointment.patient.toString() !== req.user.id) {
             return res.status(401).json({ success: false, message: 'Not authorized to update this appointment' });
+        }
+        if (isUserDoctor && appointment.doctor.toString() !== req.user.id) {
+            return res.status(401).json({ success: false, message: 'Not authorized to update this appointment' });
+        }
+
+        // Data restriction for patients
+        if (isUserPatient) {
+            const allowedFields = ['status', 'appointmentDate', 'reason'];
+            const updates = Object.keys(req.body);
+            const isValidOperation = updates.every((update) => allowedFields.includes(update));
+
+            if (!isValidOperation) {
+                return res.status(400).json({ success: false, message: 'Invalid updates for patient role' });
+            }
+
+            // Patients can only set status to 'cancelled'
+            if (req.body.status && req.body.status !== 'cancelled') {
+                return res.status(400).json({ success: false, message: 'Patients can only set status to cancelled' });
+            }
         }
 
         appointment = await Appointment.findByIdAndUpdate(req.params.id, req.body, {

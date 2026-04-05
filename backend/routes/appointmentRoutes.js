@@ -15,7 +15,7 @@ router.route('/')
     .get(protect, getAppointments);
 
 router.route('/:id')
-    .put(protect, authorize('doctor', 'admin'), updateAppointmentStatus)
+    .put(protect, authorize('doctor', 'admin', 'patient'), updateAppointmentStatus)
     .delete(protect, authorize('admin'), deleteAppointment);
 
 module.exports = router;

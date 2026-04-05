@@ -22,6 +22,8 @@ const MyAppointments = () => {
     const [selectedDoctor, setSelectedDoctor] = useState('');
     const [appointmentDate, setAppointmentDate] = useState(new Date());
     const [reason, setReason] = useState('');
+    const [editMode, setEditMode] = useState(false);
+    const [editId, setEditId] = useState(null);
 
     const fetchData = async () => {
         try {
@@ -53,20 +55,39 @@ const MyAppointments = () => {
             const token = localStorage.getItem('token');
             const config = { headers: { Authorization: `Bearer ${token}` } };
 
-            await axios.post(`${API_BASE_URL}/api/appointments`, {
-                doctorId: selectedDoctor,
-                appointmentDate,
-                reason
-            }, config);
+            if (editMode) {
+                await axios.put(`${API_BASE_URL}/api/appointments/${editId}`, {
+                    appointmentDate,
+                    reason
+                }, config);
+                toast.success("Appointment Rescheduled Successfully!");
+            } else {
+                await axios.post(`${API_BASE_URL}/api/appointments`, {
+                    doctorId: selectedDoctor,
+                    appointmentDate,
+                    reason
+                }, config);
+                toast.success("Appointment Booked Successfully!");
+            }
 
-            toast.success("Appointment Booked Successfully!");
             setShowModal(false);
+            setEditMode(false);
+            setEditId(null);
             fetchData();
             setSelectedDoctor('');
             setReason('');
         } catch (error) {
-            toast.error(error.response?.data?.message || "Booking failed");
+            toast.error(error.response?.data?.message || "Operation failed");
         }
+    };
+
+    const handleOpenReschedule = (appt) => {
+        setEditMode(true);
+        setEditId(appt._id);
+        setSelectedDoctor(appt.doctor?._id);
+        setAppointmentDate(new Date(appt.appointmentDate));
+        setReason(appt.reason || '');
+        setShowModal(true);
     };
 
     const handleCancel = async (id) => {
@@ -121,7 +142,14 @@ const MyAppointments = () => {
                 <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => setShowModal(true)}
+                    onClick={() => {
+                        setEditMode(false);
+                        setEditId(null);
+                        setSelectedDoctor('');
+                        setReason('');
+                        setAppointmentDate(new Date());
+                        setShowModal(true);
+                    }}
                     className="glass-button flex items-center justify-center gap-2 group"
                 >
                     <Plus size={20} className="group-hover:rotate-90 transition-transform duration-300" />
@@ -222,7 +250,10 @@ const MyAppointments = () => {
                                             >
                                                 Cancel
                                             </button>
-                                            <button className="flex-1 py-3 rounded-xl bg-slate-900 text-white text-sm font-black hover:bg-slate-800 transition-shadow">
+                                            <button
+                                                onClick={() => handleOpenReschedule(appt)}
+                                                className="flex-1 py-3 rounded-xl bg-slate-900 text-white text-sm font-black hover:bg-slate-800 transition-shadow"
+                                            >
                                                 Reschedule
                                             </button>
                                         </>
@@ -257,12 +288,17 @@ const MyAppointments = () => {
 
                             <div className="p-8 border-b border-slate-100 flex justify-between items-center bg-white relative">
                                 <div>
-                                    <h3 className="text-2xl font-black text-slate-900">Book Appointment</h3>
-                                    <p className="text-sm text-slate-500 font-medium">Choose your specialist and preferred time</p>
+                                    <h3 className="text-2xl font-black text-slate-900">{editMode ? 'Reschedule Visit' : 'Book Appointment'}</h3>
+                                    <p className="text-sm text-slate-500 font-medium">
+                                        {editMode ? 'Update your clinical schedule' : 'Choose your specialist and preferred time'}
+                                    </p>
                                 </div>
                                 <motion.button
                                     whileHover={{ rotate: 90 }}
-                                    onClick={() => setShowModal(false)}
+                                    onClick={() => {
+                                        setShowModal(false);
+                                        setEditMode(false);
+                                    }}
                                     className="p-2 bg-slate-100 text-slate-500 rounded-full hover:bg-slate-200 transition-colors"
                                 >
                                     <X size={20} />
@@ -273,13 +309,14 @@ const MyAppointments = () => {
                                 <div className="space-y-2">
                                     <label className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
                                         <Stethoscope size={14} className="text-primary" />
-                                        Select Specialist
+                                        {editMode ? 'Assigned Specialist' : 'Select Specialist'}
                                     </label>
                                     <div className="relative group">
                                         <select
+                                            disabled={editMode}
                                             value={selectedDoctor}
                                             onChange={(e) => setSelectedDoctor(e.target.value)}
-                                            className="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all font-bold text-slate-800 appearance-none"
+                                            className="w-full p-4 rounded-2xl bg-slate-50 border border-slate-100 focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all font-bold text-slate-800 appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
                                             required
                                         >
                                             <option value="">Choose a specialist...</option>
@@ -287,9 +324,11 @@ const MyAppointments = () => {
                                                 <option key={doc._id} value={doc._id}>Dr. {doc.name} • {doc.specialization || 'General Practice'}</option>
                                             ))}
                                         </select>
-                                        <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 border-l border-slate-200 pl-3">
-                                            <Search size={18} />
-                                        </div>
+                                        {!editMode && (
+                                            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 border-l border-slate-200 pl-3">
+                                                <Search size={18} />
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
 
@@ -346,7 +385,10 @@ const MyAppointments = () => {
                                 <div className="pt-4 flex gap-4">
                                     <button
                                         type="button"
-                                        onClick={() => setShowModal(false)}
+                                        onClick={() => {
+                                            setShowModal(false);
+                                            setEditMode(false);
+                                        }}
                                         className="flex-1 py-4 text-slate-400 font-black hover:text-slate-600 transition-colors"
                                     >
                                         Cancel
@@ -355,7 +397,7 @@ const MyAppointments = () => {
                                         type="submit"
                                         className="flex-[2] py-4 bg-primary text-white rounded-[20px] font-black shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
                                     >
-                                        Confirm Booking
+                                        {editMode ? 'Update Schedule' : 'Confirm Booking'}
                                     </button>
                                 </div>
                             </form>
