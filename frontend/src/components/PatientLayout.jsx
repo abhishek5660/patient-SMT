@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import API_BASE_URL from '../config';
 import {
     LayoutDashboard, Calendar, FileText, FileBarChart, CreditCard,
