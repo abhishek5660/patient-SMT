@@ -233,7 +233,7 @@ const AdminOverview = () => {
                         </div>
                     </div>
                     
-                    <div className="flex-1 min-h-[350px] w-full">
+                    <div className="flex-1 min-h-[300px] sm:min-h-[350px] w-full">
                         <ResponsiveContainer width="100%" height="100%">
                             <AreaChart data={revenueFilter === 'This Year' ? revenueDataThisYear : revenueDataLastYear} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                                 <defs>
@@ -281,7 +281,7 @@ const AdminOverview = () => {
                 </motion.div>
 
                 {/* Vertical Timeline Activity Feed */}
-                <motion.div variants={itemVariants} className="glass-card p-6 flex flex-col h-[500px]">
+                <motion.div variants={itemVariants} className="glass-card p-6 flex flex-col h-auto lg:h-[500px]">
                     <div className="flex items-center justify-between mb-8">
                         <h3 className="text-xl font-bold text-slate-800">Recent Activity</h3>
                         <button onClick={() => navigate('/admin-dashboard/appointments')} className="text-primary text-sm font-bold hover:text-primary-dark transition-colors px-3 py-1.5 rounded-lg hover:bg-blue-50">

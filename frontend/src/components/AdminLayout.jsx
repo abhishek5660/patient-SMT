@@ -130,7 +130,7 @@ const AdminLayout = ({ children }) => {
     };
 
     return (
-        <div className="min-h-screen bg-[#f8fafc] flex relative overflow-hidden font-sans">
+        <div className="min-h-screen bg-[#f8fafc] flex relative font-sans">
             <BackgroundOrbs />
 
             {/* Desktop Sidebar */}
@@ -300,11 +300,11 @@ const AdminLayout = ({ children }) => {
             </AnimatePresence>
 
             {/* Main Content Wrapper */}
-            <div className="flex-1 flex flex-col min-w-0 h-[100dvh] lg:h-screen lg:overflow-hidden z-10 relative">
+            <div className="flex-1 flex flex-col min-w-0 min-h-screen lg:h-screen lg:overflow-hidden z-10 relative">
                 
                 {/* Floating Top Header */}
-                <header className="px-4 lg:px-8 py-4 lg:py-6 z-40 transition-all duration-300">
-                    <div className={`flex items-center justify-between gap-4 p-4 rounded-3xl transition-all duration-500 ${scrolled ? 'glass-card shadow-lg bg-white/80' : 'bg-transparent'}`}>
+                <header className="sticky top-0 lg:relative px-4 lg:px-8 py-4 lg:py-6 z-40 transition-all duration-300">
+                    <div className={`flex items-center justify-between gap-4 p-4 rounded-3xl transition-all duration-500 ${scrolled ? 'glass-card shadow-lg bg-white/90 backdrop-blur-md' : 'bg-transparent'}`}>
                         <div className="flex items-center gap-4">
                             <button
                                 onClick={() => setIsMobileOpen(true)}
@@ -412,7 +412,7 @@ const AdminLayout = ({ children }) => {
                 </header>
 
                 {/* Main Scrollable Area */}
-                <main className="flex-1 px-4 lg:px-8 pb-8 overflow-y-auto overscroll-y-none no-scrollbar relative z-10 w-full">
+                <main className="flex-1 px-4 lg:px-8 pb-8 lg:overflow-y-auto no-scrollbar relative z-10 w-full">
                     <AnimatePresence mode="wait">
                         <motion.div
                             key={location.pathname}

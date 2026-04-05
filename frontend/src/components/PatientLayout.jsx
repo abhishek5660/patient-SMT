@@ -78,7 +78,7 @@ const PatientLayout = ({ children }) => {
 
 
     return (
-        <div className="min-h-screen bg-gray-50/50 flex relative overflow-hidden">
+        <div className="min-h-screen bg-gray-50/50 flex relative">
             {/* Background Decor */}
             <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-500/10 rounded-full blur-[120px] pointer-events-none" />
             <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-teal-500/10 rounded-full blur-[120px] pointer-events-none" />
@@ -216,9 +216,9 @@ const PatientLayout = ({ children }) => {
             </aside>
 
             {/* Main Content */}
-            <div className="flex-1 flex flex-col min-w-0 h-[100dvh] lg:h-screen lg:overflow-hidden">
+            <div className="flex-1 flex flex-col min-w-0 min-h-screen lg:h-screen lg:overflow-hidden">
                 {/* Top Header - Glassmorphic */}
-                <header className="h-20 flex items-center justify-between px-8 py-4 z-40">
+                <header className="sticky top-0 lg:relative h-20 flex items-center justify-between px-8 py-4 z-40 bg-white/80 backdrop-blur-lg border-b border-white/20 sm:border-none sm:bg-transparent">
                     <div className="flex items-center gap-4">
                         <button
                             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -309,7 +309,7 @@ const PatientLayout = ({ children }) => {
                 </header>
 
                 {/* Page Content */}
-                <main className="flex-1 px-8 pb-8 overflow-y-auto overscroll-y-none custom-scrollbar">
+                <main className="flex-1 px-8 pb-8 lg:overflow-y-auto custom-scrollbar">
                     <div className="max-w-7xl mx-auto animate-slide-up">
                         {children}
                     </div>

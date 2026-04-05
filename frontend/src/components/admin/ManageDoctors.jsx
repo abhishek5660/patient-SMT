@@ -150,9 +150,10 @@ const ManageDoctors = () => {
                 variants={containerVariants}
                 initial="hidden"
                 animate="show"
-                className="glass-card overflow-hidden"
+                className="glass-card overflow-hidden border-none sm:border"
             >
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto custom-scrollbar -mx-4 sm:mx-0">
+                    <div className="min-w-[800px] sm:min-w-full">
                     <table className="w-full text-left border-collapse">
                         <thead>
                             <tr className="bg-slate-50/80 border-b border-slate-200">
@@ -242,6 +243,7 @@ const ManageDoctors = () => {
                             )}
                         </tbody>
                     </table>
+                    </div>
                 </div>
             </motion.div>
 

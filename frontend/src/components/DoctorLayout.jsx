@@ -136,9 +136,9 @@ const DoctorLayout = ({ children }) => {
             </aside>
 
             {/* Main Content */}
-            <div className="flex-1 flex flex-col min-w-0 h-[100dvh] lg:h-screen lg:overflow-hidden">
+            <div className="flex-1 flex flex-col min-w-0 min-h-screen lg:h-screen lg:overflow-hidden">
                 {/* Top Header */}
-                <header className="h-16 bg-white border-b border-gray-100 flex items-center justify-between px-4 lg:px-8 bg-opacity-80 backdrop-blur-md sticky top-0 z-40">
+                <header className="sticky top-0 lg:relative h-16 bg-white border-b border-gray-100 flex items-center justify-between px-4 lg:px-8 bg-opacity-95 backdrop-blur-md z-40">
                     <button
                         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                         className="p-2 rounded-lg hover:bg-gray-100 text-gray-500 lg:hidden"
@@ -239,7 +239,7 @@ const DoctorLayout = ({ children }) => {
                 </header>
 
                 {/* Page Content */}
-                <main className="flex-1 p-4 lg:p-8 overflow-y-auto overscroll-y-none">
+                <main className="flex-1 p-4 lg:p-8 lg:overflow-y-auto">
                     <div className="max-w-7xl mx-auto">
                         {children}
                     </div>
