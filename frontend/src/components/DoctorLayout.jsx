@@ -87,7 +87,7 @@ const DoctorLayout = ({ children }) => {
             </aside>
 
             {/* Main Content */}
-            <div className="flex-1 flex flex-col min-w-0">
+            <div className="flex-1 flex flex-col min-w-0 h-[100dvh] lg:h-screen lg:overflow-hidden">
                 {/* Top Header */}
                 <header className="h-16 bg-white border-b border-gray-100 flex items-center justify-between px-4 lg:px-8 bg-opacity-80 backdrop-blur-md sticky top-0 z-40">
                     <button
@@ -120,7 +120,7 @@ const DoctorLayout = ({ children }) => {
                 </header>
 
                 {/* Page Content */}
-                <main className="flex-1 p-4 lg:p-8 overflow-y-auto">
+                <main className="flex-1 p-4 lg:p-8 overflow-y-auto overscroll-y-contain">
                     <div className="max-w-7xl mx-auto">
                         {children}
                     </div>

@@ -155,7 +155,7 @@ const PatientLayout = ({ children }) => {
             </aside>
 
             {/* Main Content */}
-            <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
+            <div className="flex-1 flex flex-col min-w-0 h-[100dvh] lg:h-screen lg:overflow-hidden">
                 {/* Top Header - Glassmorphic */}
                 <header className="h-20 flex items-center justify-between px-8 py-4 z-40">
                     <div className="flex items-center gap-4">
@@ -179,7 +179,7 @@ const PatientLayout = ({ children }) => {
                 </header>
 
                 {/* Page Content */}
-                <main className="flex-1 px-8 pb-8 overflow-y-auto custom-scrollbar">
+                <main className="flex-1 px-8 pb-8 overflow-y-auto overscroll-y-contain custom-scrollbar">
                     <div className="max-w-7xl mx-auto animate-slide-up">
                         {children}
                     </div>
