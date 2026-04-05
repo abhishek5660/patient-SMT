@@ -287,7 +287,7 @@ const ManageDoctors = () => {
                                             <input
                                                 type="email" required className="input-field"
                                                 value={newDoctor.email} onChange={(e) => setNewDoctor({ ...newDoctor, email: e.target.value })}
-                                                placeholder="doctor@medcare.com"
+                                                placeholder="doctor@medicare.com"
                                             />
                                         </div>
                                     </div>

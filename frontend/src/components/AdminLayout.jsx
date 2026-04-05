@@ -103,7 +103,7 @@ const AdminLayout = ({ children }) => {
                         </motion.div>
                         <motion.div variants={textVariants} className="flex flex-col min-w-max">
                             <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600">
-                                MedCare
+                                Medi Care
                             </span>
                             <span className="text-[10px] font-bold text-primary tracking-[0.2em] uppercase">
                                 Super Admin
@@ -214,7 +214,10 @@ const AdminLayout = ({ children }) => {
                                     <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary to-primary-dark flex items-center justify-center shadow-lg">
                                         <Shield className="text-white w-5 h-5" />
                                     </div>
-                                    <span className="text-xl font-bold text-slate-900">MedCare</span>
+                                <div className="flex flex-col">
+                                    <span className="text-xl font-bold text-slate-900 leading-tight">Medi Care</span>
+                                    <span className="text-[9px] font-bold text-primary tracking-[0.1em] uppercase">Super Admin</span>
+                                </div>
                                 </div>
                                 <button onClick={() => setIsMobileOpen(false)} className="p-2 text-slate-500 bg-slate-50 rounded-full hover:bg-slate-100">
                                     <X size={20} />

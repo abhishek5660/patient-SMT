@@ -90,7 +90,7 @@ const AdminOverview = () => {
         const date = new Date().toLocaleDateString();
 
         doc.setFontSize(22);
-        doc.text('MedCare System Overview', 14, 22);
+        doc.text('Medi Care System Overview', 14, 22);
         doc.setFontSize(11);
         doc.setTextColor('#64748B');
         doc.text(`Generated on: ${date}`, 14, 30);
@@ -112,7 +112,7 @@ const AdminOverview = () => {
             headStyles: { fillColor: '#3B82F6', textColor: '#ffffff' }
         });
 
-        doc.save(`medcare-report-${date.replace(/\//g, '-')}.pdf`);
+        doc.save(`medicare-report-${date.replace(/\//g, '-')}.pdf`);
     };
 
     // Mock data for beautiful charts
