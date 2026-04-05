@@ -31,6 +31,7 @@ app.use('/api/reports', require('./routes/reportRoutes'));
 app.use('/api/prescriptions', require('./routes/prescriptionRoutes'));
 app.use('/api/doctor', require('./routes/doctorRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
+app.use('/api/notifications', require('./routes/notificationRoutes'));
 
 // Serve uploads folder
 const path = require('path');

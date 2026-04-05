@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import API_BASE_URL from '../config';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -11,10 +14,54 @@ const AdminLayout = ({ children }) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [isMobileOpen, setIsMobileOpen] = useState(false);
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+    const [notifications, setNotifications] = useState([]);
     const [scrolled, setScrolled] = useState(false);
     const { user, logout } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
+
+    // Fetch real notifications
+    const fetchNotifications = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const config = { headers: { Authorization: `Bearer ${token}` } };
+            const { data } = await axios.get(`${API_BASE_URL}/api/notifications`, config);
+            setNotifications(data);
+        } catch (error) {
+            console.error('Error fetching notifications:', error);
+        }
+    };
+
+    useEffect(() => {
+        if (user) {
+            fetchNotifications();
+            const interval = setInterval(fetchNotifications, 30000);
+            return () => clearInterval(interval);
+        }
+    }, [user]);
+
+    const markAsRead = async (id) => {
+        try {
+            const token = localStorage.getItem('token');
+            const config = { headers: { Authorization: `Bearer ${token}` } };
+            await axios.put(`${API_BASE_URL}/api/notifications/${id}/read`, {}, config);
+            fetchNotifications();
+        } catch (error) {
+            console.error('Error marking as read:', error);
+        }
+    };
+
+    const markAllRead = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const config = { headers: { Authorization: `Bearer ${token}` } };
+            await axios.put(`${API_BASE_URL}/api/notifications/read-all`, {}, config);
+            fetchNotifications();
+            toast.success('All notifications marked as read');
+        } catch (error) {
+            console.error('Error marking all as read:', error);
+        }
+    };
 
     // Handle scroll for topbar glass effect
     useEffect(() => {
@@ -37,11 +84,6 @@ const AdminLayout = ({ children }) => {
         { path: '/admin-dashboard/settings', label: 'Settings', icon: Settings },
     ];
 
-    const notifications = [
-        { id: 1, title: 'System Update', message: 'The patient management system has been updated to v1.2.0', time: '2 hours ago', type: 'info' },
-        { id: 2, title: 'New Doctor Registered', message: 'Dr. Sarah Jenkins has completed registration.', time: '5 hours ago', type: 'success' },
-        { id: 3, title: 'Server Alert', message: 'Backend load is at 85%. Monitoring performance.', time: '1 day ago', type: 'warning' },
-    ];
 
     // Background Orbs component
     const BackgroundOrbs = () => (
@@ -299,7 +341,9 @@ const AdminLayout = ({ children }) => {
                                     ${isNotificationsOpen ? 'bg-primary text-white border-primary' : 'bg-white border-slate-200 text-slate-500 hover:text-primary hover:border-primary/30'}`}
                                 >
                                     <Bell size={20} />
-                                    <span className="absolute top-2 right-2.5 w-2.5 h-2.5 bg-rose-500 rounded-full border-2 border-white animate-pulse"></span>
+                                    {notifications.some(n => !n.isRead) && (
+                                        <span className="absolute top-2 right-2.5 w-2.5 h-2.5 bg-rose-500 rounded-full border-2 border-white animate-pulse"></span>
+                                    )}
                                 </button>
 
                                 <AnimatePresence>
@@ -323,24 +367,41 @@ const AdminLayout = ({ children }) => {
                                                     <span className="text-[10px] font-black uppercase text-primary tracking-widest bg-primary/10 px-2 py-1 rounded-lg">3 New</span>
                                                 </div>
                                                 <div className="space-y-2 max-h-[350px] overflow-y-auto no-scrollbar pr-1">
-                                                    {notifications.map(notif => (
-                                                        <div key={notif.id} className="p-4 rounded-[20px] bg-slate-50/50 hover:bg-white border border-transparent hover:border-slate-100 transition-all duration-300 group cursor-pointer">
-                                                            <div className="flex justify-between items-start gap-3">
-                                                                <div className={`mt-1.5 w-2 h-2 rounded-full flex-shrink-0 
-                                                                    ${notif.type === 'success' ? 'bg-emerald-500' : notif.type === 'warning' ? 'bg-amber-500' : 'bg-primary'}`} 
-                                                                />
-                                                                <div className="flex-1">
-                                                                    <p className="text-sm font-black text-slate-800 group-hover:text-primary transition-colors">{notif.title}</p>
-                                                                    <p className="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed">{notif.message}</p>
-                                                                    <p className="text-[10px] font-bold text-slate-400 mt-2 uppercase tracking-tight">{notif.time}</p>
+                                                    {notifications.length === 0 ? (
+                                                        <div className="py-10 text-center">
+                                                            <Bell className="w-12 h-12 text-slate-200 mx-auto mb-3" />
+                                                            <p className="text-slate-400 text-sm">No notifications yet</p>
+                                                        </div>
+                                                    ) : (
+                                                        notifications.map(notif => (
+                                                            <div 
+                                                                key={notif._id} 
+                                                                onClick={() => markAsRead(notif._id)}
+                                                                className={`p-4 rounded-[20px] transition-all duration-300 group cursor-pointer border 
+                                                                ${notif.isRead ? 'bg-slate-50/50 grayscale-[0.5] opacity-70 border-transparent' : 'bg-white border-slate-100 shadow-sm'}`}
+                                                            >
+                                                                <div className="flex justify-between items-start gap-3">
+                                                                    <div className={`mt-1.5 w-2 h-2 rounded-full flex-shrink-0 
+                                                                        ${notif.type === 'success' ? 'bg-emerald-500' : notif.type === 'warning' ? 'bg-amber-500' : 'bg-primary'}`} 
+                                                                    />
+                                                                    <div className="flex-1">
+                                                                        <p className={`text-sm font-black transition-colors ${notif.isRead ? 'text-slate-600' : 'text-slate-800 group-hover:text-primary'}`}>{notif.title}</p>
+                                                                        <p className="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed">{notif.message}</p>
+                                                                        <p className="text-[10px] font-bold text-slate-400 mt-2 uppercase tracking-tight">{new Date(notif.createdAt).toLocaleString()}</p>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    ))}
+                                                        ))
+                                                    )}
                                                 </div>
-                                                <button className="w-full mt-4 py-3 text-xs font-black text-slate-400 hover:text-primary transition-colors border-t border-slate-100 pt-4 bg-transparent outline-none">
-                                                    Mark all as read
-                                                </button>
+                                                {notifications.length > 0 && (
+                                                    <button 
+                                                        onClick={markAllRead}
+                                                        className="w-full mt-4 py-3 text-xs font-black text-slate-400 hover:text-primary transition-colors border-t border-slate-100 pt-4 bg-transparent outline-none"
+                                                    >
+                                                        Mark all as read
+                                                    </button>
+                                                )}
                                             </motion.div>
                                         </>
                                     )}

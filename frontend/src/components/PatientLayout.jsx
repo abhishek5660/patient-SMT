@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import API_BASE_URL from '../config';
@@ -11,9 +13,54 @@ import { useAuth } from '../context/AuthContext';
 const PatientLayout = ({ children }) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+    const [notifications, setNotifications] = useState([]);
     const { user, logout } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
+
+    // Fetch real notifications
+    const fetchNotifications = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const config = { headers: { Authorization: `Bearer ${token}` } };
+            const { data } = await axios.get(`${API_BASE_URL}/api/notifications`, config);
+            setNotifications(data);
+        } catch (error) {
+            console.error('Error fetching notifications:', error);
+        }
+    };
+
+    useEffect(() => {
+        if (user) {
+            fetchNotifications();
+            // Optional: Poll for new notifications every 30 seconds
+            const interval = setInterval(fetchNotifications, 30000);
+            return () => clearInterval(interval);
+        }
+    }, [user]);
+
+    const markAsRead = async (id) => {
+        try {
+            const token = localStorage.getItem('token');
+            const config = { headers: { Authorization: `Bearer ${token}` } };
+            await axios.put(`${API_BASE_URL}/api/notifications/${id}/read`, {}, config);
+            fetchNotifications();
+        } catch (error) {
+            console.error('Error marking as read:', error);
+        }
+    };
+
+    const markAllRead = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const config = { headers: { Authorization: `Bearer ${token}` } };
+            await axios.put(`${API_BASE_URL}/api/notifications/read-all`, {}, config);
+            fetchNotifications();
+            toast.success('All notifications marked as read');
+        } catch (error) {
+            console.error('Error marking all as read:', error);
+        }
+    };
 
     const handleLogout = () => {
         logout();
@@ -29,11 +76,6 @@ const PatientLayout = ({ children }) => {
         { path: '/patient-dashboard/profile', label: 'Profile Settings', icon: User },
     ];
 
-    const notifications = [
-        { id: 1, title: 'Welcome!', message: 'Welcome to the new MedCare Patient Portal.', time: 'Just now', type: 'info' },
-        { id: 2, title: 'Appointment Confirmed', message: 'Your visit with Dr. James is confirmed for tomorrow.', time: '3 hours ago', type: 'success' },
-        { id: 3, title: 'Report Ready', message: 'Your Blood Test results are now available to view.', time: '1 day ago', type: 'info' },
-    ];
 
     return (
         <div className="min-h-screen bg-gray-50/50 flex relative overflow-hidden">
@@ -197,7 +239,9 @@ const PatientLayout = ({ children }) => {
                                 ${isNotificationsOpen ? 'bg-blue-600 text-white border-blue-600' : 'bg-white/50 border-white/20 text-gray-500 hover:text-blue-600'}`}
                             >
                                 <Bell size={20} />
-                                <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white animate-pulse"></span>
+                                {notifications.some(n => !n.isRead) && (
+                                    <span className="absolute top-2 right-2.5 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white animate-pulse"></span>
+                                )}
                             </button>
 
                             <AnimatePresence>
@@ -221,24 +265,41 @@ const PatientLayout = ({ children }) => {
                                                 <span className="text-[10px] font-bold uppercase text-blue-600 tracking-widest bg-blue-50 px-2 py-1 rounded-lg">Recent</span>
                                             </div>
                                             <div className="space-y-2 max-h-[350px] overflow-y-auto no-scrollbar pr-1">
-                                                {notifications.map(notif => (
-                                                    <div key={notif.id} className="p-3.5 rounded-2xl bg-gray-50 hover:bg-gray-100/80 transition-all duration-200 group cursor-pointer border border-transparent hover:border-gray-200">
-                                                        <div className="flex gap-3">
-                                                            <div className={`mt-1.5 w-2 h-2 rounded-full flex-shrink-0 
-                                                                ${notif.type === 'success' ? 'bg-green-500' : 'bg-blue-500'}`} 
-                                                            />
-                                                            <div className="flex-1">
-                                                                <p className="text-sm font-bold text-gray-800 group-hover:text-blue-600 transition-colors leading-tight">{notif.title}</p>
-                                                                <p className="text-xs text-gray-500 mt-1 line-clamp-2 leading-relaxed">{notif.message}</p>
-                                                                <p className="text-[10px] font-semibold text-gray-400 mt-2 uppercase">{notif.time}</p>
+                                                {notifications.length === 0 ? (
+                                                    <div className="py-10 text-center">
+                                                        <Bell className="w-12 h-12 text-gray-200 mx-auto mb-3" />
+                                                        <p className="text-gray-400 text-sm">No notifications yet</p>
+                                                    </div>
+                                                ) : (
+                                                    notifications.map(notif => (
+                                                        <div 
+                                                            key={notif._id} 
+                                                            onClick={() => markAsRead(notif._id)}
+                                                            className={`p-3.5 rounded-2xl transition-all duration-200 group cursor-pointer border 
+                                                            ${notif.isRead ? 'bg-gray-50/50 grayscale-[0.5] opacity-70' : 'bg-blue-50/50 border-blue-100 shadow-sm'}`}
+                                                        >
+                                                            <div className="flex gap-3">
+                                                                <div className={`mt-1.5 w-2 h-2 rounded-full flex-shrink-0 
+                                                                    ${notif.type === 'success' ? 'bg-green-500' : notif.type === 'warning' ? 'bg-orange-500' : 'bg-blue-500'}`} 
+                                                                />
+                                                                <div className="flex-1">
+                                                                    <p className={`text-sm font-bold transition-colors ${notif.isRead ? 'text-gray-600' : 'text-gray-900 group-hover:text-blue-600'}`}>{notif.title}</p>
+                                                                    <p className="text-xs text-gray-500 mt-1 line-clamp-2 leading-relaxed">{notif.message}</p>
+                                                                    <p className="text-[10px] font-semibold text-gray-400 mt-2 uppercase">{new Date(notif.createdAt).toLocaleString()}</p>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                ))}
+                                                    ))
+                                                )}
                                             </div>
-                                            <button className="w-full mt-4 py-3 text-xs font-bold text-gray-400 hover:text-blue-600 transition-colors border-t border-gray-50 pt-4 bg-transparent">
-                                                View all notifications
-                                            </button>
+                                            {notifications.length > 0 && (
+                                                <button 
+                                                    onClick={markAllRead}
+                                                    className="w-full mt-4 py-3 text-xs font-bold text-gray-400 hover:text-blue-600 transition-colors border-t border-gray-50 pt-4 bg-transparent outline-none"
+                                                >
+                                                    Mark all as read
+                                                </button>
+                                            )}
                                         </motion.div>
                                     </>
                                 )}

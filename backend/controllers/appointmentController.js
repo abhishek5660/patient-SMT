@@ -1,5 +1,6 @@
 const Appointment = require('../models/Appointment');
 const User = require('../models/User');
+const { createNotification } = require('./notificationController');
 
 // @desc    Book an appointment
 // @route   POST /api/appointments
@@ -19,6 +20,15 @@ exports.bookAppointment = async (req, res) => {
             appointmentDate,
             reason
         });
+
+        // Notify Doctor
+        const patient = await User.findById(req.user.id);
+        await createNotification(
+            doctorId,
+            'New Appointment Request',
+            `Patient ${patient.name} has requested an appointment on ${new Date(appointmentDate).toLocaleDateString()}.`,
+            'info'
+        );
 
         res.status(201).json({
             success: true,
@@ -100,10 +110,32 @@ exports.updateAppointmentStatus = async (req, res) => {
             }
         }
 
+        const oldStatus = appointment.status;
         appointment = await Appointment.findByIdAndUpdate(req.params.id, req.body, {
             new: true,
             runValidators: true
-        });
+        }).populate('doctor', 'name').populate('patient', 'name');
+
+        // Notify relevant parties
+        if (req.body.status && req.body.status !== oldStatus) {
+            if (isUserDoctor || isUserAdmin) {
+                // Notify Patient about status change
+                await createNotification(
+                    appointment.patient._id,
+                    `Appointment ${req.body.status.charAt(0).toUpperCase() + req.body.status.slice(1)}`,
+                    `Your appointment with Dr. ${appointment.doctor.name} has been ${req.body.status}.`,
+                    req.body.status === 'approved' ? 'success' : 'warning'
+                );
+            } else if (isUserPatient && req.body.status === 'cancelled') {
+                // Notify Doctor about patient cancellation
+                await createNotification(
+                    appointment.doctor._id,
+                    'Appointment Cancelled',
+                    `Patient ${appointment.patient.name} has cancelled their appointment scheduled for ${new Date(appointment.appointmentDate).toLocaleDateString()}.`,
+                    'warning'
+                );
+            }
+        }
 
         res.status(200).json({
             success: true,
