@@ -309,7 +309,7 @@ const PatientLayout = ({ children }) => {
                 </header>
 
                 {/* Page Content */}
-                <main className="flex-1 px-8 pb-8 overflow-y-auto overscroll-y-contain custom-scrollbar">
+                <main className="flex-1 px-8 pb-8 overflow-y-auto overscroll-y-none custom-scrollbar">
                     <div className="max-w-7xl mx-auto animate-slide-up">
                         {children}
                     </div>

@@ -239,7 +239,7 @@ const DoctorLayout = ({ children }) => {
                 </header>
 
                 {/* Page Content */}
-                <main className="flex-1 p-4 lg:p-8 overflow-y-auto overscroll-y-contain">
+                <main className="flex-1 p-4 lg:p-8 overflow-y-auto overscroll-y-none">
                     <div className="max-w-7xl mx-auto">
                         {children}
                     </div>

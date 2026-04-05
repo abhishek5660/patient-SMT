@@ -412,7 +412,7 @@ const AdminLayout = ({ children }) => {
                 </header>
 
                 {/* Main Scrollable Area */}
-                <main className="flex-1 px-4 lg:px-8 pb-8 overflow-y-auto overscroll-y-contain no-scrollbar relative z-10 w-full">
+                <main className="flex-1 px-4 lg:px-8 pb-8 overflow-y-auto overscroll-y-none no-scrollbar relative z-10 w-full">
                     <AnimatePresence mode="wait">
                         <motion.div
                             key={location.pathname}

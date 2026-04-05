@@ -44,7 +44,7 @@
     /* #EF4444 */
   }
 
-  body {
+  html, body {
     @apply bg-background text-text-primary font-sans antialiased;
     background-color: #f8fafc;
     background-image:
@@ -52,6 +52,7 @@
       radial-gradient(circle at 85% 30%, hsla(173, 80%, 40%, 0.15), transparent 25%),
       radial-gradient(circle at 50% 80%, hsla(250, 80%, 60%, 0.1), transparent 30%);
     background-attachment: fixed;
+    overscroll-behavior-y: none;
   }
 
   /* Custom Scrollbar - ultra sleek */
