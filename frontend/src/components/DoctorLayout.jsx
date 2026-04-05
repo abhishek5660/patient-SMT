@@ -9,6 +9,7 @@ import { useAuth } from '../context/AuthContext';
 
 const DoctorLayout = ({ children }) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [showNotifications, setShowNotifications] = useState(false);
     const { user, logout } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
@@ -26,6 +27,12 @@ const DoctorLayout = ({ children }) => {
         { path: '/doctor-dashboard/reports', label: 'Patient Reports', icon: Activity },
         { path: '/doctor-dashboard/earnings', label: 'Earnings', icon: DollarSign },
         { path: '/doctor-dashboard/profile', label: 'Profile Settings', icon: User },
+    ];
+
+    const notifications = [
+        { id: 1, title: 'New Appointment', message: 'You have a new appointment request from John Doe.', time: '10 mins ago', type: 'info' },
+        { id: 2, title: 'Prescription Sent', message: 'Prescription for Patient #442 has been delivered.', time: '2 hours ago', type: 'success' },
+        { id: 3, title: 'Emergency Alert', message: 'Patient Sarah M. has reported high temperature.', time: '4 hours ago', type: 'warning' },
     ];
 
     return (
@@ -49,7 +56,7 @@ const DoctorLayout = ({ children }) => {
                     </div>
 
                     {/* Nav Items */}
-                    <nav className="flex-1 py-6 space-y-2 px-3">
+                    <nav className="flex-1 py-6 space-y-2 px-3 overflow-y-auto no-scrollbar">
                         {navItems.map((item) => {
                             const Icon = item.icon;
                             const isActive = location.pathname === item.path;
@@ -98,10 +105,59 @@ const DoctorLayout = ({ children }) => {
                     </button>
 
                     <div className="flex items-center gap-6 ml-auto">
-                        <button className="relative p-2 rounded-full hover:bg-gray-100 text-gray-400 hover:text-teal-600 transition-colors">
-                            <Bell size={20} />
-                            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
-                        </button>
+                        <div className="relative">
+                            <button 
+                                onClick={() => setShowNotifications(!showNotifications)}
+                                className={`relative p-2 rounded-full border transition-colors 
+                                ${showNotifications ? 'bg-teal-600 text-white border-teal-600' : 'bg-white text-gray-400 border-transparent hover:bg-gray-100 hover:text-teal-600'}`}
+                            >
+                                <Bell size={20} />
+                                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
+                            </button>
+
+                            <AnimatePresence>
+                                {showNotifications && (
+                                    <>
+                                        <motion.div 
+                                            initial={{ opacity: 0 }} 
+                                            animate={{ opacity: 1 }} 
+                                            exit={{ opacity: 0 }}
+                                            onClick={() => setShowNotifications(false)}
+                                            className="fixed inset-0 z-0"
+                                        />
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                                            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                                            className="absolute right-0 mt-3 w-80 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden z-20 origin-top-right"
+                                        >
+                                            <div className="bg-teal-600 p-4">
+                                                <h3 className="text-white font-bold">Notifications</h3>
+                                            </div>
+                                            <div className="divide-y divide-gray-50 max-h-[300px] overflow-y-auto no-scrollbar">
+                                                {notifications.map(notif => (
+                                                    <div key={notif.id} className="p-4 hover:bg-gray-50 transition-colors cursor-pointer group">
+                                                        <div className="flex gap-3">
+                                                            <div className={`mt-1 w-2 h-2 rounded-full flex-shrink-0 
+                                                                ${notif.type === 'warning' ? 'bg-orange-500' : notif.type === 'success' ? 'bg-green-500' : 'bg-teal-500'}`} 
+                                                            />
+                                                            <div>
+                                                                <p className="text-sm font-semibold text-gray-800 group-hover:text-teal-600 transition-colors">{notif.title}</p>
+                                                                <p className="text-xs text-gray-500 mt-1">{notif.message}</p>
+                                                                <p className="text-[10px] text-gray-400 mt-2 font-medium uppercase tracking-tighter">{notif.time}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div className="p-3 bg-gray-50 text-center border-t border-gray-100">
+                                                <button className="text-xs font-bold text-teal-600 hover:text-teal-700">View all alerts</button>
+                                            </div>
+                                        </motion.div>
+                                    </>
+                                )}
+                            </AnimatePresence>
+                        </div>
 
                         <div className="flex items-center gap-3 pl-6 border-l border-gray-100">
                             <div className="text-right hidden md:block">

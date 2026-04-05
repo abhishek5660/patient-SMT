@@ -10,6 +10,7 @@ import { useAuth } from '../context/AuthContext';
 const AdminLayout = ({ children }) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [isMobileOpen, setIsMobileOpen] = useState(false);
+    const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const { user, logout } = useAuth();
     const navigate = useNavigate();
@@ -34,6 +35,12 @@ const AdminLayout = ({ children }) => {
         { path: '/admin-dashboard/appointments', label: 'Appointments', icon: Calendar },
         { path: '/admin-dashboard/financials', label: 'Financials', icon: CreditCard },
         { path: '/admin-dashboard/settings', label: 'Settings', icon: Settings },
+    ];
+
+    const notifications = [
+        { id: 1, title: 'System Update', message: 'The patient management system has been updated to v1.2.0', time: '2 hours ago', type: 'info' },
+        { id: 2, title: 'New Doctor Registered', message: 'Dr. Sarah Jenkins has completed registration.', time: '5 hours ago', type: 'success' },
+        { id: 3, title: 'Server Alert', message: 'Backend load is at 85%. Monitoring performance.', time: '1 day ago', type: 'warning' },
     ];
 
     // Background Orbs component
@@ -224,7 +231,7 @@ const AdminLayout = ({ children }) => {
                                 </button>
                             </div>
                             
-                            <nav className="flex-1 overflow-y-auto px-4 py-4 space-y-2">
+                            <nav className="flex-1 overflow-y-auto px-4 py-4 space-y-2 no-scrollbar">
                                 {navItems.map((item) => {
                                     const isActive = location.pathname === item.path;
                                     return (
@@ -240,7 +247,7 @@ const AdminLayout = ({ children }) => {
                                     )
                                 })}
                             </nav>
-                             <div className="p-6 border-t border-slate-100">
+                             <div className="p-6 border-t border-slate-100 mt-auto">
                                 <button onClick={handleLogout} className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-red-50 text-red-600 font-bold hover:bg-red-500 hover:text-white transition-all">
                                     <LogOut size={18} /> Sign Out
                                 </button>
@@ -285,10 +292,60 @@ const AdminLayout = ({ children }) => {
                             </div>
 
                             {/* Notifications */}
-                            <button className="relative p-3 rounded-2xl bg-white border border-slate-200 text-slate-500 hover:text-primary hover:border-primary/30 shadow-sm transition-all hover:scale-105">
-                                <Bell size={20} />
-                                <span className="absolute top-2 right-2.5 w-2.5 h-2.5 bg-rose-500 rounded-full border-2 border-white animate-pulse"></span>
-                            </button>
+                            <div className="relative">
+                                <button 
+                                    onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
+                                    className={`relative p-3 rounded-2xl border transition-all hover:scale-105 shadow-sm 
+                                    ${isNotificationsOpen ? 'bg-primary text-white border-primary' : 'bg-white border-slate-200 text-slate-500 hover:text-primary hover:border-primary/30'}`}
+                                >
+                                    <Bell size={20} />
+                                    <span className="absolute top-2 right-2.5 w-2.5 h-2.5 bg-rose-500 rounded-full border-2 border-white animate-pulse"></span>
+                                </button>
+
+                                <AnimatePresence>
+                                    {isNotificationsOpen && (
+                                        <>
+                                            <motion.div 
+                                                initial={{ opacity: 0 }} 
+                                                animate={{ opacity: 1 }} 
+                                                exit={{ opacity: 0 }}
+                                                onClick={() => setIsNotificationsOpen(false)}
+                                                className="fixed inset-0 z-0"
+                                            />
+                                            <motion.div
+                                                initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                                exit={{ opacity: 0, y: 15, scale: 0.95 }}
+                                                className="absolute right-0 mt-4 w-[320px] md:w-[380px] glass-card rounded-[28px] shadow-2xl p-4 overflow-hidden z-20 origin-top-right border border-white/60"
+                                            >
+                                                <div className="flex items-center justify-between mb-4 px-2">
+                                                    <h3 className="text-lg font-black text-slate-800">Notifications</h3>
+                                                    <span className="text-[10px] font-black uppercase text-primary tracking-widest bg-primary/10 px-2 py-1 rounded-lg">3 New</span>
+                                                </div>
+                                                <div className="space-y-2 max-h-[350px] overflow-y-auto no-scrollbar pr-1">
+                                                    {notifications.map(notif => (
+                                                        <div key={notif.id} className="p-4 rounded-[20px] bg-slate-50/50 hover:bg-white border border-transparent hover:border-slate-100 transition-all duration-300 group cursor-pointer">
+                                                            <div className="flex justify-between items-start gap-3">
+                                                                <div className={`mt-1.5 w-2 h-2 rounded-full flex-shrink-0 
+                                                                    ${notif.type === 'success' ? 'bg-emerald-500' : notif.type === 'warning' ? 'bg-amber-500' : 'bg-primary'}`} 
+                                                                />
+                                                                <div className="flex-1">
+                                                                    <p className="text-sm font-black text-slate-800 group-hover:text-primary transition-colors">{notif.title}</p>
+                                                                    <p className="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed">{notif.message}</p>
+                                                                    <p className="text-[10px] font-bold text-slate-400 mt-2 uppercase tracking-tight">{notif.time}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                                <button className="w-full mt-4 py-3 text-xs font-black text-slate-400 hover:text-primary transition-colors border-t border-slate-100 pt-4 bg-transparent outline-none">
+                                                    Mark all as read
+                                                </button>
+                                            </motion.div>
+                                        </>
+                                    )}
+                                </AnimatePresence>
+                            </div>
                         </div>
                     </div>
                 </header>

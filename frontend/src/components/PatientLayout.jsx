@@ -9,6 +9,7 @@ import { useAuth } from '../context/AuthContext';
 
 const PatientLayout = ({ children }) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
     const { user, logout } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
@@ -25,6 +26,12 @@ const PatientLayout = ({ children }) => {
         { path: '/patient-dashboard/reports', label: 'Medical Reports', icon: FileBarChart },
         { path: '/patient-dashboard/billing', label: 'Billing & Payments', icon: CreditCard },
         { path: '/patient-dashboard/profile', label: 'Profile Settings', icon: User },
+    ];
+
+    const notifications = [
+        { id: 1, title: 'Welcome!', message: 'Welcome to the new MedCare Patient Portal.', time: 'Just now', type: 'info' },
+        { id: 2, title: 'Appointment Confirmed', message: 'Your visit with Dr. James is confirmed for tomorrow.', time: '3 hours ago', type: 'success' },
+        { id: 3, title: 'Report Ready', message: 'Your Blood Test results are now available to view.', time: '1 day ago', type: 'info' },
     ];
 
     return (
@@ -151,6 +158,17 @@ const PatientLayout = ({ children }) => {
                             )
                         })}
                     </nav>
+                    
+                    {/* Mobile Logout */}
+                    <div className="mt-auto pt-6 border-t border-gray-100">
+                        <button
+                            onClick={handleLogout}
+                            className="w-full flex items-center justify-center gap-2 px-4 py-3.5 rounded-2xl bg-red-50 text-red-600 font-bold hover:bg-red-500 hover:text-white transition-all shadow-sm"
+                        >
+                            <LogOut size={18} />
+                            <span>Sign Out</span>
+                        </button>
+                    </div>
                 </div>
             </aside>
 
@@ -171,10 +189,60 @@ const PatientLayout = ({ children }) => {
                     </div>
 
                     <div className="flex items-center gap-4">
-                        <button className="relative p-3 rounded-xl bg-white/50 backdrop-blur-md border border-white/20 hover:bg-white hover:shadow-lg transition-all text-gray-500 hover:text-blue-600">
-                            <Bell size={20} />
-                            <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white animate-pulse"></span>
-                        </button>
+                        <div className="relative">
+                            <button 
+                                onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
+                                className={`relative p-3 rounded-xl backdrop-blur-md border transition-all hover:shadow-lg 
+                                ${isNotificationsOpen ? 'bg-blue-600 text-white border-blue-600' : 'bg-white/50 border-white/20 text-gray-500 hover:text-blue-600'}`}
+                            >
+                                <Bell size={20} />
+                                <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white animate-pulse"></span>
+                            </button>
+
+                            <AnimatePresence>
+                                {isNotificationsOpen && (
+                                    <>
+                                        <motion.div 
+                                            initial={{ opacity: 0 }} 
+                                            animate={{ opacity: 1 }} 
+                                            exit={{ opacity: 0 }}
+                                            onClick={() => setIsNotificationsOpen(false)}
+                                            className="fixed inset-0 z-0"
+                                        />
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                                            exit={{ opacity: 0, y: 15, scale: 0.95 }}
+                                            className="absolute right-0 mt-4 w-[300px] md:w-[350px] bg-white rounded-3xl shadow-2xl p-4 overflow-hidden z-20 origin-top-right border border-gray-100"
+                                        >
+                                            <div className="flex items-center justify-between mb-4 px-2">
+                                                <h3 className="text-lg font-bold text-gray-900">Notifications</h3>
+                                                <span className="text-[10px] font-bold uppercase text-blue-600 tracking-widest bg-blue-50 px-2 py-1 rounded-lg">Recent</span>
+                                            </div>
+                                            <div className="space-y-2 max-h-[350px] overflow-y-auto no-scrollbar pr-1">
+                                                {notifications.map(notif => (
+                                                    <div key={notif.id} className="p-3.5 rounded-2xl bg-gray-50 hover:bg-gray-100/80 transition-all duration-200 group cursor-pointer border border-transparent hover:border-gray-200">
+                                                        <div className="flex gap-3">
+                                                            <div className={`mt-1.5 w-2 h-2 rounded-full flex-shrink-0 
+                                                                ${notif.type === 'success' ? 'bg-green-500' : 'bg-blue-500'}`} 
+                                                            />
+                                                            <div className="flex-1">
+                                                                <p className="text-sm font-bold text-gray-800 group-hover:text-blue-600 transition-colors leading-tight">{notif.title}</p>
+                                                                <p className="text-xs text-gray-500 mt-1 line-clamp-2 leading-relaxed">{notif.message}</p>
+                                                                <p className="text-[10px] font-semibold text-gray-400 mt-2 uppercase">{notif.time}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <button className="w-full mt-4 py-3 text-xs font-bold text-gray-400 hover:text-blue-600 transition-colors border-t border-gray-50 pt-4 bg-transparent">
+                                                View all notifications
+                                            </button>
+                                        </motion.div>
+                                    </>
+                                )}
+                            </AnimatePresence>
+                        </div>
                     </div>
                 </header>
 
