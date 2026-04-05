@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { motion, AnimatePresence } from 'framer-motion';
-import { UserPlus, Trash2, Search, User, X, Mail, Navigation, HeartPulse } from 'lucide-react';
+import { UserPlus, Trash2, Search, User, X, Mail, Navigation, HeartPulse, Edit2 } from 'lucide-react';
 import API_BASE_URL from '../../config';
 
 const containerVariants = {
@@ -20,10 +20,11 @@ const ManageDoctors = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(true);
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isEditMode, setIsEditMode] = useState(false);
+    const [currentDoctorId, setCurrentDoctorId] = useState(null);
     const [newDoctor, setNewDoctor] = useState({
         name: '', email: '', password: '', specialization: '',
-        experience: '', consultationFee: ''
+        experience: '', consultationFee: '', qualifications: ''
     });
 
     const fetchDoctors = async () => {
@@ -58,19 +59,47 @@ const ManageDoctors = () => {
         }
     };
 
-    const handleAddDoctor = async (e) => {
+    const openAddModal = () => {
+        setIsEditMode(false);
+        setNewDoctor({ name: '', email: '', password: '', specialization: '', experience: '', consultationFee: '', qualifications: '' });
+        setIsModalOpen(true);
+    };
+
+    const openEditModal = (doc) => {
+        setIsEditMode(true);
+        setCurrentDoctorId(doc._id);
+        setNewDoctor({
+            name: doc.name,
+            email: doc.email,
+            password: '', // Password not required for edit
+            specialization: doc.specialization || '',
+            experience: doc.experience || '',
+            consultationFee: doc.consultationFee || '',
+            qualifications: doc.qualifications || ''
+        });
+        setIsModalOpen(true);
+    };
+
+    const handleFormSubmit = async (e) => {
         e.preventDefault();
         try {
             const token = localStorage.getItem('token');
             const config = { headers: { Authorization: `Bearer ${token}` } };
-            await axios.post(`${API_BASE_URL}/api/admin/doctors`, newDoctor, config);
-            toast.success("Doctor added successfully");
+            
+            if (isEditMode) {
+                await axios.put(`${API_BASE_URL}/api/admin/doctors/${currentDoctorId}`, newDoctor, config);
+                toast.success("Doctor updated successfully");
+            } else {
+                await axios.post(`${API_BASE_URL}/api/admin/doctors`, newDoctor, config);
+                toast.success("Doctor added successfully");
+            }
+            
             setIsModalOpen(false);
-            setNewDoctor({ name: '', email: '', password: '', specialization: '', experience: '', consultationFee: '' });
+            setNewDoctor({ name: '', email: '', password: '', specialization: '', experience: '', consultationFee: '', qualifications: '' });
             fetchDoctors();
         } catch (error) {
             console.error(error);
-            toast.error(error.response?.data?.message || "Failed to add doctor");
+            toast.error(error.response?.data?.message || `Failed to ${isEditMode ? 'update' : 'add'} doctor`);
         }
     };
 
@@ -109,7 +138,7 @@ const ManageDoctors = () => {
                             className="input-field pl-11 shadow-sm"
                         />
                     </div>
-                    <button onClick={() => setIsModalOpen(true)} className="glass-button flex items-center justify-center gap-2 w-full sm:w-auto">
+                    <button onClick={openAddModal} className="glass-button flex items-center justify-center gap-2 w-full sm:w-auto">
                         <UserPlus size={18} strokeWidth={2.5} />
                         <span>Add Doctor</span>
                     </button>
@@ -179,13 +208,22 @@ const ManageDoctors = () => {
                                     </td>
                                     
                                     <td className="px-6 py-4 text-right">
-                                        <button
-                                            onClick={() => handleDelete(doc._id)}
-                                            className="p-2.5 bg-white border border-slate-200 text-slate-400 hover:text-rose-500 hover:border-rose-200 hover:bg-rose-50 hover:shadow-sm rounded-xl transition-all inline-flex items-center justify-center transform hover:-translate-y-0.5"
-                                            title="Remove Practitioner"
-                                        >
-                                            <Trash2 size={16} strokeWidth={2.5} />
-                                        </button>
+                                        <div className="flex justify-end gap-2">
+                                            <button
+                                                onClick={() => openEditModal(doc)}
+                                                className="p-2.5 bg-white border border-slate-200 text-slate-400 hover:text-primary hover:border-primary/20 hover:bg-blue-50 hover:shadow-sm rounded-xl transition-all inline-flex items-center justify-center transform hover:-translate-y-0.5"
+                                                title="Edit Practitioner"
+                                            >
+                                                <Edit2 size={16} strokeWidth={2.5} />
+                                            </button>
+                                            <button
+                                                onClick={() => handleDelete(doc._id)}
+                                                className="p-2.5 bg-white border border-slate-200 text-slate-400 hover:text-rose-500 hover:border-rose-200 hover:bg-rose-50 hover:shadow-sm rounded-xl transition-all inline-flex items-center justify-center transform hover:-translate-y-0.5"
+                                                title="Remove Practitioner"
+                                            >
+                                                <Trash2 size={16} strokeWidth={2.5} />
+                                            </button>
+                                        </div>
                                     </td>
                                 </motion.tr>
                             ))}
@@ -225,15 +263,15 @@ const ManageDoctors = () => {
                         >
                             <div className="p-6 sm:p-8 flex justify-between items-center bg-white/50 border-b border-slate-100">
                                 <div>
-                                    <h3 className="text-2xl font-black text-slate-800 tracking-tight">New Practitioner</h3>
-                                    <p className="text-sm font-medium text-slate-500 mt-1">Add a new doctor to the platform</p>
+                                    <h3 className="text-2xl font-black text-slate-800 tracking-tight">{isEditMode ? 'Edit Practitioner' : 'New Practitioner'}</h3>
+                                    <p className="text-sm font-medium text-slate-500 mt-1">{isEditMode ? 'Update doctor information' : 'Add a new doctor to the platform'}</p>
                                 </div>
                                 <button onClick={() => setIsModalOpen(false)} className="p-2.5 text-slate-400 hover:text-slate-600 bg-white shadow-sm border border-slate-200 hover:bg-slate-50 rounded-full transition-all">
                                     <X size={20} strokeWidth={2.5} />
                                 </button>
                             </div>
                             
-                            <form onSubmit={handleAddDoctor} className="p-6 sm:p-8 space-y-5 bg-white/40">
+                            <form onSubmit={handleFormSubmit} className="p-6 sm:p-8 space-y-5 bg-white/40">
                                 <div className="space-y-4">
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div>
@@ -283,13 +321,21 @@ const ManageDoctors = () => {
                                             />
                                         </div>
                                         <div>
-                                            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1">Initial Password</label>
+                                            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1">{isEditMode ? 'New Password (Optional)' : 'Initial Password'}</label>
                                             <input
-                                                type="password" required className="input-field"
+                                                type="password" required={!isEditMode} className="input-field"
                                                 value={newDoctor.password} onChange={(e) => setNewDoctor({ ...newDoctor, password: e.target.value })}
                                                 placeholder="••••••••"
                                             />
                                         </div>
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1">Qualifications</label>
+                                        <input
+                                            type="text" className="input-field"
+                                            value={newDoctor.qualifications} onChange={(e) => setNewDoctor({ ...newDoctor, qualifications: e.target.value })}
+                                            placeholder="e.g. MBBS, MD"
+                                        />
                                     </div>
                                 </div>
 
@@ -301,7 +347,7 @@ const ManageDoctors = () => {
                                         Cancel
                                     </button>
                                     <button type="submit" className="glass-button flex-1 py-3 text-lg">
-                                        Create Account
+                                        {isEditMode ? 'Update Account' : 'Create Account'}
                                     </button>
                                 </div>
                             </form>

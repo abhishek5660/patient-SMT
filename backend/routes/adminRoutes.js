@@ -6,7 +6,8 @@ const {
     deleteUser,
     getAllAppointments,
     getAllPayments,
-    addDoctor
+    addDoctor,
+    updateDoctor
 } = require('../controllers/adminController');
 
 const router = express.Router();
@@ -23,5 +24,6 @@ router.delete('/users/:id', deleteUser);
 router.get('/appointments', getAllAppointments);
 router.get('/payments', getAllPayments);
 router.post('/doctors', addDoctor);
+router.put('/doctors/:id', updateDoctor);
 
 module.exports = router;

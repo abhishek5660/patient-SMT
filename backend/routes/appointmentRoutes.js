@@ -2,7 +2,8 @@ const express = require('express');
 const {
     bookAppointment,
     getAppointments,
-    updateAppointmentStatus
+    updateAppointmentStatus,
+    deleteAppointment
 } = require('../controllers/appointmentController');
 
 const router = express.Router();
@@ -14,6 +15,7 @@ router.route('/')
     .get(protect, getAppointments);
 
 router.route('/:id')
-    .put(protect, authorize('doctor', 'admin'), updateAppointmentStatus);
+    .put(protect, authorize('doctor', 'admin'), updateAppointmentStatus)
+    .delete(protect, authorize('admin'), deleteAppointment);
 
 module.exports = router;

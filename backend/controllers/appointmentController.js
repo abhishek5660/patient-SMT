@@ -91,3 +91,31 @@ exports.updateAppointmentStatus = async (req, res) => {
         res.status(500).json({ success: false, message: 'Server Error' });
     }
 };
+
+// @desc    Delete appointment
+// @route   DELETE /api/appointments/:id
+// @access  Private/Admin
+exports.deleteAppointment = async (req, res) => {
+    try {
+        const appointment = await Appointment.findById(req.params.id);
+
+        if (!appointment) {
+            return res.status(404).json({ success: false, message: 'Appointment not found' });
+        }
+
+        // Only admin can delete appointments for now
+        if (req.user.role !== 'admin') {
+            return res.status(401).json({ success: false, message: 'Not authorized to delete this appointment' });
+        }
+
+        await appointment.deleteOne();
+
+        res.status(200).json({
+            success: true,
+            data: {}
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+};

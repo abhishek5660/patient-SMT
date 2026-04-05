@@ -148,10 +148,39 @@ exports.addDoctor = async (req, res) => {
             role: 'doctor',
             specialization,
             experience,
-            consultationFee
+            consultationFee,
+            isApproved: true // Admin-added doctors should be approved by default
         });
 
         res.status(201).json({ success: true, data: user });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+};
+
+// @desc    Update Doctor Details
+// @route   PUT /api/admin/doctors/:id
+// @access  Private/Admin
+exports.updateDoctor = async (req, res) => {
+    try {
+        const { name, email, specialization, experience, consultationFee, qualifications } = req.body;
+
+        let doctor = await User.findById(req.params.id);
+        if (!doctor || doctor.role !== 'doctor') {
+            return res.status(404).json({ success: false, message: 'Doctor not found' });
+        }
+
+        // Update fields
+        doctor.name = name || doctor.name;
+        doctor.email = email || doctor.email;
+        doctor.specialization = specialization || doctor.specialization;
+        doctor.experience = experience || doctor.experience;
+        doctor.consultationFee = consultationFee || doctor.consultationFee;
+        doctor.qualifications = qualifications || doctor.qualifications;
+
+        await doctor.save();
+        res.status(200).json({ success: true, data: doctor });
     } catch (error) {
         console.error(error);
         res.status(500).json({ success: false, message: 'Server Error' });

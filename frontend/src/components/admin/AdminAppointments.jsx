@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import {
     Calendar, CheckCircle, XCircle, Clock,
     Search, Filter, CalendarDays, AlertCircle,
-    User, Stethoscope, ChevronRight, Activity, Trash2
+    User, Stethoscope, ChevronRight, Activity, Trash2, Eye
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import API_BASE_URL from '../../config';
@@ -19,8 +19,12 @@ const itemVariants = {
     show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } }
 };
 
-const StatCard = ({ title, value, icon: Icon, colorClass, gradientClass, subtext }) => (
-    <motion.div variants={itemVariants} className="glass-card p-6 relative overflow-hidden group cursor-pointer">
+const StatCard = ({ title, value, icon: Icon, colorClass, gradientClass, subtext, onClick }) => (
+    <motion.div 
+        variants={itemVariants} 
+        onClick={onClick}
+        className="glass-card p-6 relative overflow-hidden group cursor-pointer"
+    >
         <div className={`absolute -right-8 -top-8 w-32 h-32 ${gradientClass} opacity-20 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700 ease-out`} />
         
         <div className="flex justify-between items-start relative z-10">
@@ -44,6 +48,9 @@ const AdminAppointments = () => {
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
+    const [dateFilter, setDateFilter] = useState('all'); // 'all', 'today'
+    const [selectedAppt, setSelectedAppt] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const fetchAppointments = async () => {
         try {
@@ -64,14 +71,27 @@ const AdminAppointments = () => {
         try {
             const token = localStorage.getItem('token');
             const config = { headers: { Authorization: `Bearer ${token}` } };
-            
             await axios.put(`${API_BASE_URL}/api/appointments/${id}`, { status }, config);
-            
-            toast.success(`Appointment successfully marked as ${status}`);
+            toast.success(`Appointment marked as ${status}`);
+            fetchAppointments();
+            if (selectedAppt?._id === id) setIsModalOpen(false);
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to update status");
+        }
+    };
+
+    const handleDelete = async (id) => {
+        if (!window.confirm("Permanently delete this appointment record?")) return;
+        try {
+            const token = localStorage.getItem('token');
+            const config = { headers: { Authorization: `Bearer ${token}` } };
+            await axios.delete(`${API_BASE_URL}/api/appointments/${id}`, config);
+            toast.success("Appointment deleted");
             fetchAppointments();
         } catch (error) {
             console.error(error);
-            toast.error("Failed to update appointment status");
+            toast.error("Failed to delete appointment");
         }
     };
 
@@ -84,7 +104,8 @@ const AdminAppointments = () => {
             appt.patient?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
             appt.doctor?.name?.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesStatus = statusFilter === 'all' || appt.status === statusFilter;
-        return matchesSearch && matchesStatus;
+        const matchesDate = dateFilter === 'all' || new Date(appt.appointmentDate).toDateString() === new Date().toDateString();
+        return matchesSearch && matchesStatus && matchesDate;
     });
 
     const stats = {
@@ -146,21 +167,25 @@ const AdminAppointments = () => {
                     title="Total Requests" value={stats.total} icon={Activity}
                     colorClass="bg-gradient-to-br from-blue-500 to-indigo-600" gradientClass="bg-blue-500"
                     subtext="All time appointments"
+                    onClick={() => { setStatusFilter('all'); setDateFilter('all'); }}
                 />
                 <StatCard
                     title="Today's Bookings" value={stats.today} icon={CalendarDays}
                     colorClass="bg-gradient-to-br from-emerald-400 to-teal-500" gradientClass="bg-emerald-500"
                     subtext="Scheduled for today"
+                    onClick={() => { setStatusFilter('all'); setDateFilter('today'); }}
                 />
                 <StatCard
                     title="Pending Action" value={stats.pending} icon={Clock}
                     colorClass="bg-gradient-to-br from-amber-400 to-orange-500" gradientClass="bg-amber-500"
                     subtext="Awaiting completion"
+                    onClick={() => { setStatusFilter('scheduled'); setDateFilter('all'); }}
                 />
                 <StatCard
                     title="Successful visits" value={stats.completed} icon={CheckCircle}
                     colorClass="bg-gradient-to-br from-violet-500 to-purple-600" gradientClass="bg-violet-500"
                     subtext="Completed appointments"
+                    onClick={() => { setStatusFilter('completed'); setDateFilter('all'); }}
                 />
             </div>
 
@@ -231,7 +256,14 @@ const AdminAppointments = () => {
                                             </span>
                                         </td>
                                         <td className="px-6 py-4 text-right">
-                                            <div className="flex items-center justify-end gap-2 opacity-50 group-hover:opacity-100 transition-opacity">
+                                            <div className="flex items-center justify-end gap-2">
+                                                <button 
+                                                    onClick={() => { setSelectedAppt(appt); setIsModalOpen(true); }}
+                                                    className="p-2.5 bg-white border border-slate-200 text-slate-400 hover:text-primary hover:bg-blue-50 shadow-sm rounded-xl transition-all"
+                                                    title="View Details"
+                                                >
+                                                    <Eye size={16} strokeWidth={2.5}/>
+                                                </button>
                                                 {appt.status === 'scheduled' && (
                                                     <>
                                                         <button 
@@ -250,6 +282,13 @@ const AdminAppointments = () => {
                                                         </button>
                                                     </>
                                                 )}
+                                                <button 
+                                                    onClick={() => handleDelete(appt._id)}
+                                                    className="p-2.5 bg-white border border-slate-200 text-slate-400 hover:text-rose-500 hover:bg-rose-50 shadow-sm rounded-xl transition-all"
+                                                    title="Delete Record"
+                                                >
+                                                    <Trash2 size={16} strokeWidth={2.5}/>
+                                                </button>
                                             </div>
                                         </td>
                                     </motion.tr>
@@ -271,6 +310,102 @@ const AdminAppointments = () => {
                     </table>
                 </div>
             </motion.div>
+            {/* Details Modal */}
+            <AnimatePresence>
+                {isModalOpen && selectedAppt && (
+                    <motion.div 
+                        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                        className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50"
+                    >
+                        <motion.div 
+                            initial={{ scale: 0.95, opacity: 0, y: 20 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.95, opacity: 0, y: 20 }}
+                            className="glass-panel rounded-[32px] w-full max-w-lg overflow-hidden shadow-2xl relative bg-white"
+                        >
+                            <div className="p-8 border-b border-slate-100">
+                                <div className="flex justify-between items-start">
+                                    <div>
+                                        <h3 className="text-2xl font-black text-slate-800 tracking-tight">Appointment Details</h3>
+                                        <p className="text-slate-500 font-medium mt-1">ID: {selectedAppt._id}</p>
+                                    </div>
+                                    <button onClick={() => setIsModalOpen(false)} className="p-2 text-slate-400 hover:text-slate-600">
+                                        <XCircle size={24} />
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="p-8 space-y-6">
+                                <div className="grid grid-cols-2 gap-6">
+                                    <div className="space-y-1">
+                                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Date & Time</p>
+                                        <p className="text-slate-800 font-bold">{new Date(selectedAppt.appointmentDate).toLocaleString()}</p>
+                                    </div>
+                                    <div className="space-y-1 text-right">
+                                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Status</p>
+                                        <span className={`px-3 py-1 rounded-full text-xs font-bold capitalize ${
+                                            selectedAppt.status === 'scheduled' ? 'bg-amber-50 text-amber-600' :
+                                            selectedAppt.status === 'completed' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'
+                                        }`}>
+                                            {selectedAppt.status}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-3 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                                    <div className="flex justify-between items-center">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm">
+                                                <User size={18} className="text-slate-400" />
+                                            </div>
+                                            <div>
+                                                <p className="text-xs font-bold text-slate-400 uppercase">Patient</p>
+                                                <p className="font-bold text-slate-800">{selectedAppt.patient?.name}</p>
+                                            </div>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className="text-xs font-bold text-slate-400 uppercase">Doctor</p>
+                                            <p className="font-bold text-slate-800">Dr. {selectedAppt.doctor?.name}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Clinical Reason</p>
+                                    <div className="bg-blue-50 p-4 rounded-2xl border border-blue-100">
+                                        <p className="text-slate-700 font-medium leading-relaxed italic">
+                                            "{selectedAppt.reason || 'No specific reason provided.'}"
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="flex gap-4 pt-4">
+                                    {selectedAppt.status === 'scheduled' && (
+                                        <>
+                                            <button 
+                                                onClick={() => handleUpdateStatus(selectedAppt._id, 'completed')}
+                                                className="flex-1 py-3 bg-emerald-500 text-white rounded-xl font-bold hover:bg-emerald-600 transition-colors shadow-lg shadow-emerald-200"
+                                            >
+                                                Complete Visit
+                                            </button>
+                                            <button 
+                                                onClick={() => handleUpdateStatus(selectedAppt._id, 'cancelled')}
+                                                className="flex-1 py-3 bg-rose-50 text-rose-600 rounded-xl font-bold hover:bg-rose-100 transition-colors"
+                                            >
+                                                Cancel
+                                            </button>
+                                        </>
+                                    )}
+                                    <button 
+                                        onClick={() => handleDelete(selectedAppt._id)}
+                                        className="px-4 py-3 bg-slate-100 text-slate-500 rounded-xl hover:bg-rose-50 hover:text-rose-600 transition-colors"
+                                    >
+                                        <Trash2 size={20} />
+                                    </button>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </motion.div>
     );
 };
