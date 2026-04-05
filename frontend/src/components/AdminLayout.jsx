@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import API_BASE_URL from '../config';
@@ -15,6 +15,7 @@ const AdminLayout = ({ children }) => {
     const [isMobileOpen, setIsMobileOpen] = useState(false);
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
     const [notifications, setNotifications] = useState([]);
+    const prevNotifIds = useRef(new Set());
     const [scrolled, setScrolled] = useState(false);
     const { user, logout } = useAuth();
     const navigate = useNavigate();
@@ -35,10 +36,30 @@ const AdminLayout = ({ children }) => {
     useEffect(() => {
         if (user) {
             fetchNotifications();
-            const interval = setInterval(fetchNotifications, 30000);
+            const interval = setInterval(fetchNotifications, 20000); // Poll every 20 seconds
             return () => clearInterval(interval);
         }
     }, [user]);
+
+    // Handle real-time toast popups for new notifications
+    useEffect(() => {
+        if (notifications.length > 0) {
+            notifications.forEach(notif => {
+                if (!notif.isRead && !prevNotifIds.current.has(notif._id)) {
+                    toast.info(`🔔 ${notif.title}`, {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+                }
+                prevNotifIds.current.add(notif._id);
+            });
+        }
+    }, [notifications]);
 
     const markAsRead = async (id) => {
         try {
@@ -360,7 +381,7 @@ const AdminLayout = ({ children }) => {
                                                 initial={{ opacity: 0, y: 15, scale: 0.95 }}
                                                 animate={{ opacity: 1, y: 0, scale: 1 }}
                                                 exit={{ opacity: 0, y: 15, scale: 0.95 }}
-                                                className="absolute right-0 mt-4 w-[320px] md:w-[380px] glass-card rounded-[28px] shadow-2xl p-4 overflow-hidden z-20 origin-top-right border border-white/60"
+                                                className="absolute right-0 mt-4 w-[calc(100vw-32px)] sm:w-[380px] glass-card rounded-[28px] shadow-2xl p-4 overflow-hidden z-50 origin-top-right border border-white/60"
                                             >
                                                 <div className="flex items-center justify-between mb-4 px-2">
                                                     <h3 className="text-lg font-black text-slate-800">Notifications</h3>

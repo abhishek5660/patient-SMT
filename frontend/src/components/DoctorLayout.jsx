@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
@@ -14,6 +14,7 @@ const DoctorLayout = ({ children }) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [showNotifications, setShowNotifications] = useState(false);
     const [notifications, setNotifications] = useState([]);
+    const prevNotifIds = useRef(new Set());
     const { user, logout } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
@@ -33,10 +34,30 @@ const DoctorLayout = ({ children }) => {
     useEffect(() => {
         if (user) {
             fetchNotifications();
-            const interval = setInterval(fetchNotifications, 30000);
+            const interval = setInterval(fetchNotifications, 20000);
             return () => clearInterval(interval);
         }
     }, [user]);
+
+    // Handle real-time toast popups for new notifications
+    useEffect(() => {
+        if (notifications.length > 0) {
+            notifications.forEach(notif => {
+                if (!notif.isRead && !prevNotifIds.current.has(notif._id)) {
+                    toast.info(`🔔 ${notif.title}`, {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+                }
+                prevNotifIds.current.add(notif._id);
+            });
+        }
+    }, [notifications]);
 
     const markAsRead = async (id) => {
         try {
@@ -173,7 +194,7 @@ const DoctorLayout = ({ children }) => {
                                             initial={{ opacity: 0, y: 10, scale: 0.95 }}
                                             animate={{ opacity: 1, y: 0, scale: 1 }}
                                             exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                                            className="absolute right-0 mt-3 w-80 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden z-20 origin-top-right"
+                                            className="absolute right-0 mt-3 w-[calc(100vw-32px)] sm:w-80 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden z-50 origin-top-right"
                                         >
                                             <div className="bg-teal-600 p-4">
                                                 <h3 className="text-white font-bold">Notifications</h3>
