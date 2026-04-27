@@ -237,7 +237,7 @@ const DoctorAppointments = () => {
                                         <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 border-[3px] border-white rounded-full shadow-sm"></div>
                                     </div>
                                     <div>
-                                        <p className="text-xl font-bold text-gray-900 group-hover:text-teal-700 transition-colors uppercase tracking-tight">{appt.patient?.name || 'Unknown'}</p>
+                                        <p className="text-xl font-bold text-gray-900 group-hover:text-teal-700 transition-colors tracking-tight">{appt.patient?.name || 'Unknown'}</p>
                                         <p className="text-sm font-semibold text-gray-400">{appt.patient?.age} yrs • {appt.patient?.gender}</p>
                                     </div>
                                 </div>

@@ -1,0 +1,106 @@
+﻿
+C:\Users\navin\OneDrive\SSC CHSL NOTES\patient system copy\frontend\src\components\AdminLayout.jsx
+  8:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\navin\OneDrive\SSC CHSL NOTES\patient system copy\frontend\src\components\DoctorLayout.jsx
+  8:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\navin\OneDrive\SSC CHSL NOTES\patient system copy\frontend\src\components\PatientLayout.jsx
+  8:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\navin\OneDrive\SSC CHSL NOTES\patient system copy\frontend\src\components\PatientProfile.jsx
+  1:20  error  'useEffect' is defined but never used. Allowed unused vars must match /^[A-Z_]/u          no-unused-vars
+  2:8   error  'axios' is defined but never used. Allowed unused vars must match /^[A-Z_]/u              no-unused-vars
+  7:19  error  'setStats' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\navin\OneDrive\SSC CHSL NOTES\patient system copy\frontend\src\components\admin\AdminAppointments.jsx
+  10:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  23:41  error  'Icon' is defined but never used                                               no-unused-vars
+
+C:\Users\navin\OneDrive\SSC CHSL NOTES\patient system copy\frontend\src\components\admin\AdminOverview.jsx
+   4:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  13:41  error  'Icon' is defined but never used                                               no-unused-vars
+
+C:\Users\navin\OneDrive\SSC CHSL NOTES\patient system copy\frontend\src\components\admin\AdminProfile.jsx
+  4:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\navin\OneDrive\SSC CHSL NOTES\patient system copy\frontend\src\components\admin\FinancialManagement.jsx
+  10:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  25:41  error  'Icon' is defined but never used                                               no-unused-vars
+
+C:\Users\navin\OneDrive\SSC CHSL NOTES\patient system copy\frontend\src\components\admin\ManageDoctors.jsx
+  4:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\navin\OneDrive\SSC CHSL NOTES\patient system copy\frontend\src\components\admin\ManagePatients.jsx
+  10:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  23:41  error  'Icon' is defined but never used                                               no-unused-vars
+
+C:\Users\navin\OneDrive\SSC CHSL NOTES\patient system copy\frontend\src\components\doctor\AppointmentModal.jsx
+   5:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                     no-unused-vars
+  11:12  error  'fetchingPatients' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\navin\OneDrive\SSC CHSL NOTES\patient system copy\frontend\src\components\doctor\DoctorAppointments.jsx
+  12:10  error    'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                         no-unused-vars
+  16:7   error    'containerVariants' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                     no-unused-vars
+  26:44  error    'Icon' is defined but never used                                                                                      no-unused-vars
+  84:8   warning  React Hook useEffect has a missing dependency: 'fetchAppointments'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\navin\OneDrive\SSC CHSL NOTES\patient system copy\frontend\src\components\doctor\DoctorEarnings.jsx
+  4:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\navin\OneDrive\SSC CHSL NOTES\patient system copy\frontend\src\components\doctor\DoctorOverview.jsx
+  11:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  13:41  error  'Icon' is defined but never used                                               no-unused-vars
+
+C:\Users\navin\OneDrive\SSC CHSL NOTES\patient system copy\frontend\src\components\doctor\DoctorProfile.jsx
+  4:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\navin\OneDrive\SSC CHSL NOTES\patient system copy\frontend\src\components\doctor\DoctorReports.jsx
+  5:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\navin\OneDrive\SSC CHSL NOTES\patient system copy\frontend\src\components\doctor\MedicalRecordModal.jsx
+  3:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\navin\OneDrive\SSC CHSL NOTES\patient system copy\frontend\src\components\doctor\MyPatients.jsx
+  6:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u   no-unused-vars
+  9:10  error  'useAuth' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\navin\OneDrive\SSC CHSL NOTES\patient system copy\frontend\src\components\doctor\PrescriptionManagement.jsx
+  6:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\navin\OneDrive\SSC CHSL NOTES\patient system copy\frontend\src\components\patient\BillingPayments.jsx
+   12:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+   78:30  error  'err' is defined but never used                                                no-unused-vars
+  271:52  error  'index' is defined but never used                                              no-unused-vars
+
+C:\Users\navin\OneDrive\SSC CHSL NOTES\patient system copy\frontend\src\components\patient\DashboardOverview.jsx
+  13:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  26:41  error  'Icon' is defined but never used                                               no-unused-vars
+  64:59  error  'Icon' is defined but never used                                               no-unused-vars
+
+C:\Users\navin\OneDrive\SSC CHSL NOTES\patient system copy\frontend\src\components\patient\MedicalReports.jsx
+    7:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  100:18  error  'error' is defined but never used                                              no-unused-vars
+
+C:\Users\navin\OneDrive\SSC CHSL NOTES\patient system copy\frontend\src\components\patient\MyAppointments.jsx
+   12:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  101:18  error  'error' is defined but never used                                              no-unused-vars
+
+C:\Users\navin\OneDrive\SSC CHSL NOTES\patient system copy\frontend\src\components\patient\MyPrescriptions.jsx
+  7:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\navin\OneDrive\SSC CHSL NOTES\patient system copy\frontend\src\components\patient\ProfileSettings.jsx
+  10:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  70:18  error  'error' is defined but never used                                              no-unused-vars
+
+C:\Users\navin\OneDrive\SSC CHSL NOTES\patient system copy\frontend\src\context\AuthContext.jsx
+  9:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\navin\OneDrive\SSC CHSL NOTES\patient system copy\frontend\src\pages\Login.jsx
+  4:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\navin\OneDrive\SSC CHSL NOTES\patient system copy\frontend\src\pages\Register.jsx
+  4:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+Γ£û 47 problems (46 errors, 1 warning)
+

@@ -35,8 +35,8 @@ const StatCard = ({ title, value, icon: Icon, colorClass, gradientClass, trend, 
         
         <div className="flex justify-between items-start relative z-10">
             <div className="flex flex-col gap-1">
-                <p className="text-sm font-semibold text-slate-500 uppercase tracking-wider">{title}</p>
-                <h3 className="text-4xl font-black text-slate-800 tracking-tight mt-1">{value}</h3>
+                <p className="text-sm font-semibold text-slate-500 tracking-wider">{title}</p>
+                <h3 className="text-4xl font-semibold text-slate-800 tracking-tight mt-1">{value}</h3>
             </div>
             <div className={`p-3.5 rounded-2xl ${colorClass} text-white shadow-lg transform group-hover:rotate-12 transition-transform duration-300`}>
                 <Icon size={24} strokeWidth={2.5} />
@@ -149,7 +149,7 @@ const AdminOverview = () => {
             {/* Header Area */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <motion.div variants={itemVariants}>
-                    <h1 className="text-4xl font-black text-slate-800 tracking-tight">System Overview</h1>
+                    <h1 className="text-4xl font-semibold text-slate-800 tracking-tight">System Overview</h1>
                     <p className="text-slate-500 mt-2 font-medium text-lg">Welcome back, here's what's happening today.</p>
                 </motion.div>
                 <motion.div variants={itemVariants} className="flex gap-4">

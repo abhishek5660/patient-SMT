@@ -26,7 +26,7 @@ const ReportCard = ({ report }) => (
                         {report.title}
                     </h4>
                     <div className="flex items-center gap-1.5 mt-1">
-                        <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100 uppercase tracking-tight">
+                        <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100 tracking-tight">
                             Medical Report
                         </span>
                     </div>
@@ -115,7 +115,7 @@ const DoctorReports = () => {
                 {loading ? (
                     <div className="py-32 flex flex-col items-center gap-4">
                         <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-                        <p className="text-gray-500 font-bold tracking-wide uppercase text-xs">Loading Reports...</p>
+                        <p className="text-gray-500 font-bold tracking-wide text-xs">Loading Reports...</p>
                     </div>
                 ) : (
                     <AnimatePresence mode="popLayout">

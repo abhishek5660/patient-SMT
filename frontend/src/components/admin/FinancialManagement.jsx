@@ -28,8 +28,8 @@ const StatCard = ({ title, value, icon: Icon, colorClass, gradientClass, subtext
         
         <div className="flex justify-between items-start relative z-10">
             <div className="flex flex-col gap-1">
-                <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">{title}</p>
-                <h3 className="text-4xl font-black text-slate-800 tracking-tight mt-1">{value}</h3>
+                <p className="text-xs font-bold text-slate-500 tracking-wider">{title}</p>
+                <h3 className="text-4xl font-semibold text-slate-800 tracking-tight mt-1">{value}</h3>
             </div>
             <div className={`p-3.5 rounded-2xl ${colorClass} text-white shadow-lg transform group-hover:rotate-12 transition-transform duration-300`}>
                 <Icon size={24} strokeWidth={2.5} />
@@ -202,7 +202,7 @@ const FinancialManagement = () => {
             {/* Header */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pb-4 border-b border-slate-200">
                 <motion.div variants={itemVariants}>
-                    <h2 className="text-3xl font-black text-slate-800 tracking-tight">Financial Hub</h2>
+                    <h2 className="text-3xl font-semibold text-slate-800 tracking-tight">Financial Hub</h2>
                     <p className="text-slate-500 mt-1 font-medium">Manage hospital billing, invoices, and revenue.</p>
                 </motion.div>
 
@@ -270,11 +270,11 @@ const FinancialManagement = () => {
                     <table className="w-full text-left border-collapse">
                         <thead>
                             <tr className="bg-slate-50/80 border-b border-slate-200">
-                                <th className="px-6 py-5 text-xs font-bold text-slate-500 uppercase tracking-widest">Invoice Details</th>
-                                <th className="px-6 py-5 text-xs font-bold text-slate-500 uppercase tracking-widest">Date Issued</th>
-                                <th className="px-6 py-5 text-xs font-bold text-slate-500 uppercase tracking-widest">Financials</th>
-                                <th className="px-6 py-5 text-xs font-bold text-slate-500 uppercase tracking-widest">Status</th>
-                                <th className="px-6 py-5 text-xs font-bold text-slate-500 uppercase tracking-widest text-right">Actions</th>
+                                <th className="px-6 py-5 text-xs font-bold text-slate-500">Invoice Details</th>
+                                <th className="px-6 py-5 text-xs font-bold text-slate-500">Date Issued</th>
+                                <th className="px-6 py-5 text-xs font-bold text-slate-500">Financials</th>
+                                <th className="px-6 py-5 text-xs font-bold text-slate-500">Status</th>
+                                <th className="px-6 py-5 text-xs font-bold text-slate-500 text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100/50">
@@ -299,8 +299,8 @@ const FinancialManagement = () => {
                                         </span>
                                     </td>
                                     <td className="px-6 py-4">
-                                        <p className="text-sm font-black text-slate-800">${inv.totalAmount.toLocaleString()}</p>
-                                        <p className="text-[10px] text-primary font-bold uppercase tracking-wider mt-0.5 bg-blue-50 w-fit px-2 py-0.5 rounded-md">Paid: ${inv.paidAmount.toLocaleString()}</p>
+                                        <p className="text-sm font-semibold text-slate-800">${inv.totalAmount.toLocaleString()}</p>
+                                        <p className="text-[10px] text-primary font-bold tracking-wider mt-0.5 bg-blue-50 w-fit px-2 py-0.5 rounded-md">Paid: ${inv.paidAmount.toLocaleString()}</p>
                                     </td>
                                     <td className="px-6 py-4">
                                         <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold capitalize shadow-sm border
@@ -381,7 +381,7 @@ const FinancialManagement = () => {
                                 <div className="px-8 pb-8 overflow-y-auto custom-scrollbar flex-1 -mt-8 relative z-10">
                                     <div className="bg-white rounded-2xl p-6 shadow-xl border border-slate-100 mb-8 flex justify-between items-center">
                                         <div>
-                                            <h3 className="text-2xl font-black text-slate-800 tracking-tight">New Issue</h3>
+                                            <h3 className="text-2xl font-semibold text-slate-800 tracking-tight">New Issue</h3>
                                             <p className="text-slate-500 font-bold mt-1 text-sm">Generate invoice for patient.</p>
                                         </div>
                                         <div className="w-14 h-14 bg-blue-50 text-primary rounded-2xl flex items-center justify-center">
@@ -392,7 +392,7 @@ const FinancialManagement = () => {
                                     <div className="space-y-6">
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                             <div className="space-y-2">
-                                                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-2">Patient Target</label>
+                                                <label className="text-[10px] font-bold text-slate-400 pl-2">Patient Target</label>
                                                 <select
                                                     required
                                                     value={formData.patientId}
@@ -404,7 +404,7 @@ const FinancialManagement = () => {
                                                 </select>
                                             </div>
                                             <div className="space-y-2">
-                                                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-2">Due Date expected</label>
+                                                <label className="text-[10px] font-bold text-slate-400 pl-2">Due Date expected</label>
                                                 <input
                                                     type="date"
                                                     required
@@ -417,7 +417,7 @@ const FinancialManagement = () => {
 
                                         <div className="space-y-4 bg-slate-50 border border-slate-100 p-5 rounded-2xl mt-4">
                                             <div className="flex justify-between items-center border-b border-slate-200 pb-3">
-                                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Billable Items</label>
+                                                <label className="text-[10px] font-bold text-slate-500">Billable Items</label>
                                                 <button type="button" onClick={addItem} className="text-xs font-bold text-primary flex items-center gap-1 hover:text-blue-700 bg-blue-50 px-3 py-1 rounded-lg">
                                                     <Plus size={14} /> Add Line
                                                 </button>
@@ -453,8 +453,8 @@ const FinancialManagement = () => {
                                     
                                     <div className="mt-8 pt-6 border-t border-slate-200 flex justify-between items-center">
                                         <div>
-                                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Projected Total</p>
-                                            <p className="text-3xl font-black text-slate-800 tracking-tight">
+                                            <p className="text-[10px] font-bold text-slate-400">Projected Total</p>
+                                            <p className="text-3xl font-semibold text-slate-800 tracking-tight">
                                                 ${formData.items.reduce((sum, item) => sum + (parseFloat(item.amount) || 0), 0).toFixed(2)}
                                             </p>
                                         </div>

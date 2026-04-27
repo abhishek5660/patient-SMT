@@ -175,7 +175,7 @@ const AdminLayout = ({ children }) => {
                             <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600 block">
                                 Medi Care
                             </span>
-                            <span className="text-[10px] font-bold text-primary tracking-[0.2em] uppercase block">
+                            <span className="text-[10px] font-bold text-primary tracking-[0.2em] block">
                                 Super Admin
                             </span>
                         </motion.div>
@@ -286,7 +286,7 @@ const AdminLayout = ({ children }) => {
                                     </div>
                                 <div className="flex flex-col">
                                     <span className="text-xl font-bold text-slate-900 leading-tight">Medi Care</span>
-                                    <span className="text-[9px] font-bold text-primary tracking-[0.1em] uppercase">Super Admin</span>
+                                    <span className="text-[9px] font-bold text-primary tracking-[0.1em]">Super Admin</span>
                                 </div>
                                 </div>
                                 <button onClick={() => setIsMobileOpen(false)} className="p-2 text-slate-500 bg-slate-50 rounded-full hover:bg-slate-100">
@@ -333,7 +333,7 @@ const AdminLayout = ({ children }) => {
                             >
                                 <Menu size={20} />
                             </button>
-                            <h1 className="text-2xl font-black text-slate-800 tracking-tight hidden md:block">
+                            <h1 className="text-2xl font-semibold text-slate-800 tracking-tight hidden md:block">
                                 {navItems.find(item => item.path === location.pathname)?.label || 'Dashboard'}
                             </h1>
                         </div>
@@ -381,11 +381,11 @@ const AdminLayout = ({ children }) => {
                                                 initial={{ opacity: 0, y: 15, scale: 0.95 }}
                                                 animate={{ opacity: 1, y: 0, scale: 1 }}
                                                 exit={{ opacity: 0, y: 15, scale: 0.95 }}
-                                                className="absolute right-0 mt-4 w-[calc(100vw-32px)] sm:w-[380px] glass-card rounded-[28px] shadow-2xl p-4 overflow-hidden z-50 origin-top-right border border-white/60"
+                                                className="fixed sm:absolute top-20 sm:top-auto left-4 right-4 sm:left-auto sm:-right-4 mt-2 sm:mt-4 w-auto sm:w-[380px] glass-card rounded-[28px] shadow-2xl p-4 overflow-hidden z-50 origin-top sm:origin-top-right border border-white/60"
                                             >
                                                 <div className="flex items-center justify-between mb-4 px-2">
-                                                    <h3 className="text-lg font-black text-slate-800">Notifications</h3>
-                                                    <span className="text-[10px] font-black uppercase text-primary tracking-widest bg-primary/10 px-2 py-1 rounded-lg">3 New</span>
+                                                    <h3 className="text-lg font-semibold text-slate-800">Notifications</h3>
+                                                    <span className="text-[10px] font-semibold text-primary bg-primary/10 px-2 py-1 rounded-lg">3 New</span>
                                                 </div>
                                                 <div className="space-y-2 max-h-[350px] overflow-y-auto no-scrollbar pr-1">
                                                     {notifications.length === 0 ? (
@@ -408,7 +408,7 @@ const AdminLayout = ({ children }) => {
                                                                     <div className="flex-1">
                                                                         <p className={`text-sm font-black transition-colors ${notif.isRead ? 'text-slate-600' : 'text-slate-800 group-hover:text-primary'}`}>{notif.title}</p>
                                                                         <p className="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed">{notif.message}</p>
-                                                                        <p className="text-[10px] font-bold text-slate-400 mt-2 uppercase tracking-tight">{new Date(notif.createdAt).toLocaleString()}</p>
+                                                                        <p className="text-[10px] font-bold text-slate-400 mt-2 tracking-tight">{new Date(notif.createdAt).toLocaleString()}</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -418,7 +418,7 @@ const AdminLayout = ({ children }) => {
                                                 {notifications.length > 0 && (
                                                     <button 
                                                         onClick={markAllRead}
-                                                        className="w-full mt-4 py-3 text-xs font-black text-slate-400 hover:text-primary transition-colors border-t border-slate-100 pt-4 bg-transparent outline-none"
+                                                        className="w-full mt-4 py-3 text-xs font-semibold text-slate-400 hover:text-primary transition-colors border-t border-slate-100 pt-4 bg-transparent outline-none"
                                                     >
                                                         Mark all as read
                                                     </button>

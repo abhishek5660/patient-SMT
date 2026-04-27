@@ -104,7 +104,7 @@ const BillingAnalytics = () => {
                 </div>
                 <div className="overflow-x-auto">
                     <table className="w-full text-left text-sm text-gray-600">
-                        <thead className="bg-gray-50/50 text-gray-900 uppercase font-semibold text-xs border-b border-gray-100">
+                        <thead className="bg-gray-50/50 text-gray-900 font-semibold text-xs border-b border-gray-100">
                             <tr>
                                 <th className="px-6 py-4">Invoice ID</th>
                                 <th className="px-6 py-4">Patient</th>

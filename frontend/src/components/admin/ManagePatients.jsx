@@ -25,8 +25,8 @@ const StatCard = ({ title, value, icon: Icon, colorClass, gradientClass, trend }
         
         <div className="flex justify-between items-start relative z-10">
             <div className="flex flex-col gap-1">
-                <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">{title}</p>
-                <h3 className="text-4xl font-black text-slate-800 tracking-tight mt-1">{value}</h3>
+                <p className="text-xs font-bold text-slate-500 tracking-wider">{title}</p>
+                <h3 className="text-4xl font-semibold text-slate-800 tracking-tight mt-1">{value}</h3>
             </div>
             <div className={`p-3.5 rounded-2xl ${colorClass} text-white shadow-lg transform group-hover:rotate-12 transition-transform duration-300`}>
                 <Icon size={24} strokeWidth={2.5} />
@@ -150,7 +150,7 @@ const ManagePatients = () => {
             {/* Header Section */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pb-4 border-b border-slate-200">
                 <motion.div variants={itemVariants}>
-                    <h2 className="text-3xl font-black text-slate-800 tracking-tight">Patient Directory</h2>
+                    <h2 className="text-3xl font-semibold text-slate-800 tracking-tight">Patient Directory</h2>
                     <p className="text-slate-500 mt-1 font-medium">Viewing {filteredPatients.length} registered patients</p>
                 </motion.div>
 
@@ -197,10 +197,10 @@ const ManagePatients = () => {
                     <table className="w-full text-left border-collapse">
                         <thead>
                             <tr className="bg-slate-50/80 border-b border-slate-200">
-                                <th className="px-6 py-5 text-xs font-bold text-slate-500 uppercase tracking-widest w-[35%]">Patient Details</th>
-                                <th className="px-6 py-5 text-xs font-bold text-slate-500 uppercase tracking-widest">Contact Info</th>
-                                <th className="px-6 py-5 text-xs font-bold text-slate-500 uppercase tracking-widest">Registered</th>
-                                <th className="px-6 py-5 text-xs font-bold text-slate-500 uppercase tracking-widest text-right">Actions</th>
+                                <th className="px-6 py-5 text-xs font-bold text-slate-500 w-[35%]">Patient Details</th>
+                                <th className="px-6 py-5 text-xs font-bold text-slate-500">Contact Info</th>
+                                <th className="px-6 py-5 text-xs font-bold text-slate-500">Registered</th>
+                                <th className="px-6 py-5 text-xs font-bold text-slate-500 text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100/50">
@@ -332,7 +332,7 @@ const ManagePatients = () => {
                                         </div>
                                     </div>
                                     <div className="flex-1 pb-1">
-                                        <h3 className="text-3xl font-black text-slate-800 tracking-tight">{selectedPatient.name}</h3>
+                                        <h3 className="text-3xl font-semibold text-slate-800 tracking-tight">{selectedPatient.name}</h3>
                                         <p className="text-primary font-bold mt-1 flex items-center gap-2">
                                             {selectedPatient.email}
                                         </p>
@@ -350,7 +350,7 @@ const ManagePatients = () => {
                                         <div className="bg-white/60 border border-slate-100 rounded-2xl p-5 shadow-sm">
                                             <div className="flex items-center gap-2 mb-4">
                                                 <Activity size={18} className="text-emerald-500" />
-                                                <p className="text-sm font-bold text-slate-800 tracking-wide uppercase">Patient Info</p>
+                                                <p className="text-sm font-bold text-slate-800 tracking-wide">Patient Info</p>
                                             </div>
                                             <div className="space-y-4">
                                                 <div className="flex justify-between items-center text-sm border-b border-slate-100 pb-2">
@@ -370,7 +370,7 @@ const ManagePatients = () => {
                                         <div className="bg-white/60 border border-slate-100 rounded-2xl p-5 shadow-sm">
                                             <div className="flex items-center gap-2 mb-4">
                                                 <Key size={18} className="text-blue-500" />
-                                                <p className="text-sm font-bold text-slate-800 tracking-wide uppercase">System Record</p>
+                                                <p className="text-sm font-bold text-slate-800 tracking-wide">System Record</p>
                                             </div>
                                             <div className="space-y-4">
                                                 <div className="flex justify-between items-center text-sm border-b border-slate-100 pb-2">

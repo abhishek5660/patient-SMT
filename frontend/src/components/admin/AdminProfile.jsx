@@ -4,6 +4,7 @@ import { User, Mail, Save, Shield, Camera, Lock, Bell, Settings } from 'lucide-r
 import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 import API_BASE_URL from '../../config';
+import { useAuth } from '../../context/AuthContext';
 
 const containerVariants = {
     hidden: { opacity: 0 },
@@ -16,6 +17,7 @@ const itemVariants = {
 };
 
 const AdminProfile = () => {
+    const { setUser } = useAuth();
     const [formData, setFormData] = useState({
         name: '',
         email: ''
@@ -30,6 +32,7 @@ const AdminProfile = () => {
                 if (!token) return;
                 const config = { headers: { Authorization: `Bearer ${token}` } };
                 const res = await axios.get(`${API_BASE_URL}/api/auth/profile`, config);
+                setUser(res.data);
                 setFormData({
                     name: res.data.name,
                     email: res.data.email
@@ -55,7 +58,8 @@ const AdminProfile = () => {
             data.append('name', formData.name);
             data.append('email', formData.email);
 
-            await axios.put(`${API_BASE_URL}/api/users/profile`, data, config);
+            const res = await axios.put(`${API_BASE_URL}/api/users/profile`, data, config);
+            setUser(res.data.data);
             toast.success("Profile updated successfully");
         } catch (error) {
             console.error(error);
@@ -83,7 +87,7 @@ const AdminProfile = () => {
         >
             {/* Page Header */}
             <motion.div variants={itemVariants} className="pb-4 border-b border-slate-200">
-                <h2 className="text-3xl font-black text-slate-800 tracking-tight">System Account</h2>
+                <h2 className="text-3xl font-semibold text-slate-800 tracking-tight">System Account</h2>
                 <p className="text-slate-500 mt-1 font-medium">Manage your administrative credentials and preferences.</p>
             </motion.div>
 
@@ -103,9 +107,9 @@ const AdminProfile = () => {
                                 </button>
                             </div>
                             
-                            <h3 className="text-2xl font-black text-slate-800 tracking-tight">{formData.name || 'Admin'}</h3>
+                            <h3 className="text-2xl font-semibold text-slate-800 tracking-tight">{formData.name || 'Admin'}</h3>
                             <div className="mt-2 flex items-center justify-center gap-2">
-                                <span className="bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full border border-primary/20">
+                                <span className="bg-primary/10 text-primary text-[10px] font-semibold px-3 py-1 rounded-full border border-primary/20">
                                     Superuser
                                 </span>
                             </div>
@@ -133,12 +137,12 @@ const AdminProfile = () => {
                             <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600">
                                 <Settings size={20} />
                             </div>
-                            <h4 className="text-lg font-black text-slate-800 tracking-tight">Personal Information</h4>
+                            <h4 className="text-lg font-semibold text-slate-800 tracking-tight">Personal Information</h4>
                         </div>
 
                         <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2 md:col-span-1">
-                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2">Display Name</label>
+                                <label className="text-[10px] font-semibold text-slate-400 pl-2">Display Name</label>
                                 <div className="relative group">
                                     <User className="absolute left-4 top-3.5 text-slate-400 group-focus-within:text-primary transition-colors" size={18} />
                                     <input
@@ -153,7 +157,7 @@ const AdminProfile = () => {
                             </div>
 
                             <div className="space-y-2 md:col-span-1">
-                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2">Email Address</label>
+                                <label className="text-[10px] font-semibold text-slate-400 pl-2">Email Address</label>
                                 <div className="relative group">
                                     <Mail className="absolute left-4 top-3.5 text-slate-400 group-focus-within:text-primary transition-colors" size={18} />
                                     <input
@@ -199,7 +203,7 @@ const AdminProfile = () => {
                                     <Lock size={22} />
                                 </div>
                                 <div className="text-left">
-                                    <p className="text-base font-black text-slate-800 tracking-tight">Security & Password</p>
+                                    <p className="text-base font-semibold text-slate-800 tracking-tight">Security & Password</p>
                                     <p className="text-xs text-slate-500 font-bold mt-1">Last updated 12 days ago</p>
                                 </div>
                             </div>

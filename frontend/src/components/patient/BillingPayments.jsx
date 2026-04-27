@@ -210,7 +210,7 @@ const BillingPayments = () => {
     if (loading) return (
         <div className="flex flex-col items-center justify-center min-h-[400px] space-y-4">
             <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
-            <p className="text-slate-400 font-bold tracking-widest text-xs uppercase animate-pulse">Synchronizing Ledgers...</p>
+            <p className="text-slate-400 font-bold text-xs animate-pulse">Synchronizing Ledgers...</p>
         </div>
     );
 
@@ -222,7 +222,7 @@ const BillingPayments = () => {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                 >
-                    <h2 className="text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-500 tracking-tight">
+                    <h2 className="text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-500 tracking-tight">
                         Billing & Invoices
                     </h2>
                     <p className="text-slate-500 font-medium mt-1">Manage your medical expenses and settle balances instantly.</p>
@@ -258,8 +258,8 @@ const BillingPayments = () => {
                                 <stat.icon size={32} />
                             </div>
                             <div>
-                                <p className="text-xs font-black text-slate-400 uppercase tracking-widest">{stat.label}</p>
-                                <p className="text-3xl font-black text-slate-900 tracking-tighter mt-1">${stat.value.toLocaleString(undefined, { minimumFractionDigits: 2 })}</p>
+                                <p className="text-xs font-semibold text-slate-400">{stat.label}</p>
+                                <p className="text-3xl font-semibold text-slate-900 tracking-tight mt-1">${stat.value.toLocaleString(undefined, { minimumFractionDigits: 2 })}</p>
                             </div>
                         </div>
                     </motion.div>
@@ -324,7 +324,7 @@ const BillingPayments = () => {
                                         </div>
                                         <div>
                                             <div className="flex items-center gap-3">
-                                                <h4 className="text-xl font-black text-slate-800 tracking-tight">#{inv.invoiceNumber}</h4>
+                                                <h4 className="text-xl font-semibold text-slate-800 tracking-tight">#{inv.invoiceNumber}</h4>
                                                 <span className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider
                                                     ${inv.status === 'paid' ? 'bg-emerald-500 text-white' :
                                                         inv.status === 'partial' ? 'bg-amber-500 text-white' : 'bg-slate-100 text-slate-500'}`}>
@@ -339,8 +339,8 @@ const BillingPayments = () => {
 
                                     <div className="flex flex-col md:flex-row items-center gap-8">
                                         <div className="text-right">
-                                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Total Amount</p>
-                                            <p className="text-2xl font-black text-slate-900">${inv.totalAmount.toLocaleString()}</p>
+                                            <p className="text-[10px] font-semibold text-slate-400">Total Amount</p>
+                                            <p className="text-2xl font-semibold text-slate-900">${inv.totalAmount.toLocaleString()}</p>
                                         </div>
                                         <div className="flex items-center gap-2">
                                             {expandedInvoice === inv._id ? <ChevronUp className="text-slate-300" /> : <ChevronDown className="text-slate-300" />}
@@ -359,12 +359,12 @@ const BillingPayments = () => {
                                             <div className="p-8 space-y-8">
                                                 {/* Breakdown Table */}
                                                 <div className="space-y-4">
-                                                    <h5 className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                                    <h5 className="text-xs font-semibold text-slate-400 flex items-center gap-2">
                                                         <FileText size={14} /> Fee Breakdown
                                                     </h5>
-                                                    <div className="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-sm">
-                                                        <table className="w-full text-left">
-                                                            <thead className="bg-slate-50 text-[10px] font-black text-slate-400 uppercase">
+                                                    <div className="bg-white rounded-2xl border border-slate-100 overflow-x-auto shadow-sm">
+                                                        <table className="w-full text-left min-w-[300px]">
+                                                            <thead className="bg-slate-50 text-[10px] font-semibold text-slate-400">
                                                                 <tr>
                                                                     <th className="px-6 py-4">Description</th>
                                                                     <th className="px-6 py-4 text-right">Amount</th>
@@ -390,10 +390,10 @@ const BillingPayments = () => {
                                                 <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-4">
                                                     <div className="space-y-1">
                                                         <p className="text-xs font-bold text-slate-400">Paid so far: <span className="text-emerald-500">${inv.paidAmount.toLocaleString()}</span></p>
-                                                        <p className="text-xl font-black text-slate-800">Remaining Balance: <span className="text-rose-500">${(inv.totalAmount - inv.paidAmount).toLocaleString()}</span></p>
+                                                        <p className="text-xl font-semibold text-slate-800">Remaining Balance: <span className="text-rose-500">${(inv.totalAmount - inv.paidAmount).toLocaleString()}</span></p>
                                                     </div>
 
-                                                    <div className="flex gap-3 w-full md:w-auto">
+                                                    <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto mt-4 md:mt-0">
                                                         <button
                                                             onClick={() => generateInvoicePDF(inv)}
                                                             className="flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-3 border-2 border-slate-200 rounded-2xl text-slate-600 font-bold hover:bg-white hover:border-slate-300 transition-all shadow-sm"
@@ -403,7 +403,7 @@ const BillingPayments = () => {
                                                         {inv.status !== 'paid' && (
                                                             <button
                                                                 onClick={() => handleRazorpayPayment(inv)}
-                                                                className="flex-1 md:flex-none flex items-center justify-center gap-2 px-8 py-3 bg-gradient-to-r from-primary to-primary-dark text-white rounded-2xl font-black shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all"
+                                                                className="flex-1 md:flex-none flex items-center justify-center gap-2 px-8 py-3 bg-gradient-to-r from-primary to-primary-dark text-white rounded-2xl font-semibold shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all"
                                                             >
                                                                 <Landmark size={18} /> Pay With UPI / Card
                                                             </button>

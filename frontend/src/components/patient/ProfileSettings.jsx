@@ -8,8 +8,10 @@ import {
 import { toast } from 'react-toastify';
 import { motion } from 'framer-motion';
 import API_BASE_URL from '../../config';
+import { useAuth } from '../../context/AuthContext';
 
 const ProfileSettings = () => {
+    const { setUser } = useAuth();
     const [loading, setLoading] = useState(false);
     const [fetching, setFetching] = useState(true);
     const [formData, setFormData] = useState({
@@ -36,6 +38,7 @@ const ProfileSettings = () => {
             const config = { headers: { Authorization: `Bearer ${token}` } };
             const res = await axios.get(`${API_BASE_URL}/api/auth/profile`, config);
             const u = res.data;
+            setUser(u);
             setFormData({
                 name: u.name || '',
                 email: u.email || '',
@@ -130,7 +133,7 @@ const ProfileSettings = () => {
             fetchUser(); // Refresh server data
         } catch (error) {
             console.error(error);
-            toast.error("Failed to update profile");
+            toast.error(error.response?.data?.message || "Failed to update profile");
         } finally {
             setLoading(false);
         }
@@ -149,7 +152,7 @@ const ProfileSettings = () => {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
             >
-                <h2 className="text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600 tracking-tight">
+                <h2 className="text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600 tracking-tight">
                     Profile Settings
                 </h2>
                 <p className="text-slate-500 font-medium mt-1">Manage your digital health identity and preferences.</p>
@@ -161,7 +164,7 @@ const ProfileSettings = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 }}
-                    className="glass-card p-10 flex flex-col items-center md:flex-row gap-10 relative overflow-hidden"
+                    className="glass-card p-6 sm:p-10 flex flex-col items-center md:flex-row gap-6 sm:gap-10 relative overflow-hidden"
                 >
                     <div className="absolute top-0 right-0 p-16 bg-primary/5 rounded-bl-full pointer-events-none"></div>
 
@@ -190,7 +193,7 @@ const ProfileSettings = () => {
                     </div>
 
                     <div className="flex-1 text-center md:text-left relative z-10">
-                        <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tight">{formData.name || 'Your Name'}</h3>
+                        <h3 className="text-2xl font-semibold text-slate-900 tracking-tight">{formData.name || 'Your Name'}</h3>
                         <p className="text-primary font-bold flex items-center justify-center md:justify-start gap-2 mt-1">
                             <Fingerprint size={16} />
                             ID: PX-{Math.floor(Math.random() * 100000)}
@@ -210,17 +213,17 @@ const ProfileSettings = () => {
                         transition={{ delay: 0.2 }}
                         className="lg:col-span-2 space-y-8"
                     >
-                        <div className="glass-card p-8">
+                        <div className="glass-card p-6 sm:p-8">
                             <div className="flex items-center gap-3 border-b border-slate-100 pb-5 mb-6">
                                 <div className="p-2.5 bg-blue-50 text-blue-600 rounded-xl">
                                     <Info size={20} />
                                 </div>
-                                <h3 className="text-xl font-black text-slate-800">Essential Details</h3>
+                                <h3 className="text-xl font-semibold text-slate-800">Essential Details</h3>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
                                 <div className="space-y-2">
-                                    <label className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                    <label className="text-xs font-semibold text-slate-400 flex items-center gap-2">
                                         <User size={14} className="text-primary" />
                                         Full Name
                                     </label>
@@ -234,7 +237,7 @@ const ProfileSettings = () => {
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                    <label className="text-xs font-semibold text-slate-400 flex items-center gap-2">
                                         <Mail size={14} className="text-primary" />
                                         Email Address
                                     </label>
@@ -249,7 +252,7 @@ const ProfileSettings = () => {
                                 </div>
                                 
                                 <div className="space-y-2">
-                                    <label className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                    <label className="text-xs font-semibold text-slate-400 flex items-center gap-2">
                                         <Phone size={14} className="text-primary" />
                                         Phone Number
                                     </label>
@@ -263,7 +266,7 @@ const ProfileSettings = () => {
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                    <label className="text-xs font-semibold text-slate-400 flex items-center gap-2">
                                         <MapPin size={14} className="text-primary" />
                                         Residential Address
                                     </label>
@@ -279,7 +282,7 @@ const ProfileSettings = () => {
                                 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-2">
-                                        <label className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                        <label className="text-xs font-semibold text-slate-400 flex items-center gap-2">
                                             <Calendar size={14} className="text-primary" />
                                             Age
                                         </label>
@@ -293,7 +296,7 @@ const ProfileSettings = () => {
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <label className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                        <label className="text-xs font-semibold text-slate-400 flex items-center gap-2">
                                             <User size={14} className="text-primary" />
                                             Gender
                                         </label>
@@ -312,7 +315,7 @@ const ProfileSettings = () => {
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-2">
-                                        <label className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                        <label className="text-xs font-semibold text-slate-400 flex items-center gap-2">
                                             <CalendarDays size={14} className="text-primary" />
                                             DOB
                                         </label>
@@ -325,7 +328,7 @@ const ProfileSettings = () => {
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <label className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                        <label className="text-xs font-semibold text-slate-400 flex items-center gap-2">
                                             <Droplets size={14} className="text-primary" />
                                             Blood Group
                                         </label>
@@ -364,7 +367,7 @@ const ProfileSettings = () => {
                                 <div className="p-2.5 bg-rose-50 text-rose-500 rounded-xl">
                                     <ShieldAlert size={20} />
                                 </div>
-                                <h3 className="text-xl font-black text-slate-800">Emergency Support</h3>
+                                <h3 className="text-xl font-semibold text-slate-800">Emergency Support</h3>
                             </div>
 
                             <p className="text-xs font-medium text-slate-500 italic">
@@ -373,7 +376,7 @@ const ProfileSettings = () => {
 
                             <div className="space-y-6">
                                 <div className="space-y-2">
-                                    <label className="text-xs font-black text-rose-400 uppercase tracking-widest">Contact Name</label>
+                                    <label className="text-xs font-semibold text-rose-400">Contact Name</label>
                                     <input
                                         type="text"
                                         name="emergencyName"
@@ -384,7 +387,7 @@ const ProfileSettings = () => {
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-xs font-black text-rose-400 uppercase tracking-widest">Contact Phone</label>
+                                    <label className="text-xs font-semibold text-rose-400">Contact Phone</label>
                                     <input
                                         type="text"
                                         name="emergencyPhone"
@@ -403,7 +406,7 @@ const ProfileSettings = () => {
                                 <div className="p-2.5 bg-slate-100 rounded-xl text-slate-600">
                                     <ShieldCheck size={20} />
                                 </div>
-                                <h3 className="text-xl font-black text-slate-800">Security Settings</h3>
+                                <h3 className="text-xl font-semibold text-slate-800">Security Settings</h3>
                             </div>
                             
                             <p className="text-xs font-medium text-slate-500 italic">
@@ -412,7 +415,7 @@ const ProfileSettings = () => {
 
                             <div className="space-y-5">
                                 <div className="space-y-2">
-                                    <label className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                    <label className="text-xs font-semibold text-slate-400 flex items-center gap-2">
                                         <Lock size={14} className="text-slate-500" /> 
                                         New Password
                                     </label>
@@ -428,7 +431,7 @@ const ProfileSettings = () => {
                                     </div>
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                    <label className="text-xs font-semibold text-slate-400 flex items-center gap-2">
                                         <Lock size={14} className="text-slate-500" /> 
                                         Confirm Password
                                     </label>
@@ -465,7 +468,7 @@ const ProfileSettings = () => {
                         ) : (
                             <Save size={20} />
                         )}
-                        <span className="text-lg font-black uppercase tracking-tight">
+                        <span className="text-lg font-semibold tracking-tight">
                             {loading ? 'Propagating Changes...' : 'Save Profile Settings'}
                         </span>
                     </button>

@@ -3,8 +3,10 @@ import axios from 'axios';
 import { User, Mail, DollarSign, Clock, Save, Camera, Briefcase, Phone, MapPin, Calendar, Lock, ShieldCheck, Trash2 } from 'lucide-react';
 import { toast } from 'react-toastify';
 import API_BASE_URL from '../../config';
+import { useAuth } from '../../context/AuthContext';
 
 const DoctorProfile = () => {
+    const { setUser } = useAuth();
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
@@ -30,6 +32,7 @@ const DoctorProfile = () => {
             const config = { headers: { Authorization: `Bearer ${token}` } };
             const res = await axios.get(`${API_BASE_URL}/api/auth/profile`, config);
             const u = res.data;
+            setUser(u);
             setFormData({
                 name: u.name || '',
                 email: u.email || '',
@@ -162,7 +165,7 @@ const DoctorProfile = () => {
                     </div>
 
                     <div className="flex-1 text-center sm:text-left z-10">
-                        <h3 className="text-2xl font-bold text-gray-900 uppercase tracking-tight">{formData.name || 'Your Name'}</h3>
+                        <h3 className="text-2xl font-bold text-gray-900 tracking-tight">{formData.name || 'Your Name'}</h3>
                         <p className="text-teal-600 font-bold mt-1 tracking-wide">{formData.specialization || 'Specialization'}</p>
                         <p className="text-gray-500 text-sm mt-3 max-w-lg leading-relaxed font-medium">
                             Upload a professional photo to build trust with your patients. Recommended size 400x400px.
@@ -182,7 +185,7 @@ const DoctorProfile = () => {
 
                         <div className="space-y-5">
                             <div>
-                                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Full Name</label>
+                                <label className="block text-xs font-bold text-gray-500 tracking-wider mb-2">Full Name</label>
                                 <div className="relative group">
                                     <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-teal-500 transition-colors" size={18} />
                                     <input
@@ -196,7 +199,7 @@ const DoctorProfile = () => {
                             </div>
                             <div className="grid grid-cols-2 gap-5">
                                 <div>
-                                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Age</label>
+                                    <label className="block text-xs font-bold text-gray-500 tracking-wider mb-2">Age</label>
                                     <div className="relative group">
                                         <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-teal-500 transition-colors" size={18} />
                                         <input
@@ -209,7 +212,7 @@ const DoctorProfile = () => {
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Gender</label>
+                                    <label className="block text-xs font-bold text-gray-500 tracking-wider mb-2">Gender</label>
                                     <select
                                         name="gender"
                                         value={formData.gender}
@@ -224,7 +227,7 @@ const DoctorProfile = () => {
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Email Address</label>
+                                <label className="block text-xs font-bold text-gray-500 tracking-wider mb-2">Email Address</label>
                                 <div className="relative group">
                                     <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-teal-500 transition-colors" size={18} />
                                     <input
@@ -237,7 +240,7 @@ const DoctorProfile = () => {
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Phone Number</label>
+                                <label className="block text-xs font-bold text-gray-500 tracking-wider mb-2">Phone Number</label>
                                 <div className="relative group">
                                     <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-teal-500 transition-colors" size={18} />
                                     <input
@@ -250,7 +253,7 @@ const DoctorProfile = () => {
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Clinic Address</label>
+                                <label className="block text-xs font-bold text-gray-500 tracking-wider mb-2">Clinic Address</label>
                                 <div className="relative group">
                                     <MapPin className="absolute left-4 top-4 text-gray-400 group-focus-within:text-teal-500 transition-colors" size={18} />
                                     <textarea
@@ -277,7 +280,7 @@ const DoctorProfile = () => {
 
                             <div className="space-y-5">
                                 <div>
-                                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Specialization</label>
+                                    <label className="block text-xs font-bold text-gray-500 tracking-wider mb-2">Specialization</label>
                                     <div className="relative group">
                                         <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-teal-500 transition-colors" size={18} />
                                         <input
@@ -292,7 +295,7 @@ const DoctorProfile = () => {
                                 </div>
                                 <div className="grid grid-cols-2 gap-5">
                                     <div>
-                                        <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Fee ($)</label>
+                                        <label className="block text-xs font-bold text-gray-500 tracking-wider mb-2">Fee ($)</label>
                                         <div className="relative group">
                                             <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-teal-500 transition-colors" size={18} />
                                             <input
@@ -305,7 +308,7 @@ const DoctorProfile = () => {
                                         </div>
                                     </div>
                                     <div>
-                                        <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Experience (Yrs)</label>
+                                        <label className="block text-xs font-bold text-gray-500 tracking-wider mb-2">Experience (Yrs)</label>
                                         <div className="relative group">
                                             <Clock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-teal-500 transition-colors" size={18} />
                                             <input
@@ -319,7 +322,7 @@ const DoctorProfile = () => {
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Qualifications</label>
+                                    <label className="block text-xs font-bold text-gray-500 tracking-wider mb-2">Qualifications</label>
                                     <div className="relative group">
                                         <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-teal-500 transition-colors">
                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
@@ -348,7 +351,7 @@ const DoctorProfile = () => {
 
                             <div className="space-y-5">
                                 <div>
-                                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">New Password <span className="text-[10px] lowercase font-normal">(Leave blank to keep current)</span></label>
+                                    <label className="block text-xs font-bold text-gray-500 tracking-wider mb-2">New Password <span className="text-[10px] lowercase font-normal">(Leave blank to keep current)</span></label>
                                     <div className="relative group">
                                         <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-teal-500 transition-colors" size={18} />
                                         <input
@@ -362,7 +365,7 @@ const DoctorProfile = () => {
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Confirm New Password</label>
+                                    <label className="block text-xs font-bold text-gray-500 tracking-wider mb-2">Confirm New Password</label>
                                     <div className="relative group">
                                         <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-teal-500 transition-colors" size={18} />
                                         <input

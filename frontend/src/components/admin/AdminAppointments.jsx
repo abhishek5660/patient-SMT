@@ -29,8 +29,8 @@ const StatCard = ({ title, value, icon: Icon, colorClass, gradientClass, subtext
         
         <div className="flex justify-between items-start relative z-10">
             <div className="flex flex-col gap-1">
-                <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">{title}</p>
-                <h3 className="text-4xl font-black text-slate-800 tracking-tight mt-1">{value}</h3>
+                <p className="text-xs font-bold text-slate-500 tracking-wider">{title}</p>
+                <h3 className="text-4xl font-semibold text-slate-800 tracking-tight mt-1">{value}</h3>
             </div>
             <div className={`p-3.5 rounded-2xl ${colorClass} text-white shadow-lg transform group-hover:rotate-12 transition-transform duration-300`}>
                 <Icon size={24} strokeWidth={2.5} />
@@ -129,7 +129,7 @@ const AdminAppointments = () => {
             {/* Header */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pb-4 border-b border-slate-200">
                 <motion.div variants={itemVariants}>
-                    <h2 className="text-3xl font-black text-slate-800 tracking-tight">Appointment Console</h2>
+                    <h2 className="text-3xl font-semibold text-slate-800 tracking-tight">Appointment Console</h2>
                     <p className="text-slate-500 mt-1 font-medium">Managing {filteredAppointments.length} matching appointments</p>
                 </motion.div>
 
@@ -195,11 +195,11 @@ const AdminAppointments = () => {
                     <table className="w-full text-left border-collapse">
                         <thead>
                             <tr className="bg-slate-50/80 border-b border-slate-200">
-                                <th className="px-6 py-5 text-xs font-bold text-slate-500 uppercase tracking-widest content-center">Time & Date</th>
-                                <th className="px-6 py-5 text-xs font-bold text-slate-500 uppercase tracking-widest">Patient</th>
-                                <th className="px-6 py-5 text-xs font-bold text-slate-500 uppercase tracking-widest">Assigned Specialist</th>
-                                <th className="px-6 py-5 text-xs font-bold text-slate-500 uppercase tracking-widest">Status</th>
-                                <th className="px-6 py-5 text-xs font-bold text-slate-500 uppercase tracking-widest text-right">Actions</th>
+                                <th className="px-6 py-5 text-xs font-bold text-slate-500 content-center">Time & Date</th>
+                                <th className="px-6 py-5 text-xs font-bold text-slate-500">Patient</th>
+                                <th className="px-6 py-5 text-xs font-bold text-slate-500">Assigned Specialist</th>
+                                <th className="px-6 py-5 text-xs font-bold text-slate-500">Status</th>
+                                <th className="px-6 py-5 text-xs font-bold text-slate-500 text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100/50">
@@ -239,7 +239,7 @@ const AdminAppointments = () => {
                                                 </div>
                                                 <div>
                                                     <p className="font-bold text-slate-800">Dr. {appt.doctor?.name || 'Unassigned'}</p>
-                                                    <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">
+                                                    <p className="text-[10px] text-slate-500 font-bold tracking-wider">
                                                         {appt.doctor?.specialization || 'General'}
                                                     </p>
                                                 </div>
@@ -324,7 +324,7 @@ const AdminAppointments = () => {
                             <div className="p-8 border-b border-slate-100">
                                 <div className="flex justify-between items-start">
                                     <div>
-                                        <h3 className="text-2xl font-black text-slate-800 tracking-tight">Appointment Details</h3>
+                                        <h3 className="text-2xl font-semibold text-slate-800 tracking-tight">Appointment Details</h3>
                                         <p className="text-slate-500 font-medium mt-1">ID: {selectedAppt._id}</p>
                                     </div>
                                     <button onClick={() => setIsModalOpen(false)} className="p-2 text-slate-400 hover:text-slate-600">
@@ -336,11 +336,11 @@ const AdminAppointments = () => {
                             <div className="p-8 space-y-6">
                                 <div className="grid grid-cols-2 gap-6">
                                     <div className="space-y-1">
-                                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Date & Time</p>
+                                        <p className="text-[10px] font-bold text-slate-400">Date & Time</p>
                                         <p className="text-slate-800 font-bold">{new Date(selectedAppt.appointmentDate).toLocaleString()}</p>
                                     </div>
                                     <div className="space-y-1 text-right">
-                                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Status</p>
+                                        <p className="text-[10px] font-bold text-slate-400">Status</p>
                                         <span className={`px-3 py-1 rounded-full text-xs font-bold capitalize ${
                                             selectedAppt.status === 'scheduled' ? 'bg-amber-50 text-amber-600' :
                                             selectedAppt.status === 'completed' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'
@@ -357,19 +357,19 @@ const AdminAppointments = () => {
                                                 <User size={18} className="text-slate-400" />
                                             </div>
                                             <div>
-                                                <p className="text-xs font-bold text-slate-400 uppercase">Patient</p>
+                                                <p className="text-xs font-bold text-slate-400">Patient</p>
                                                 <p className="font-bold text-slate-800">{selectedAppt.patient?.name}</p>
                                             </div>
                                         </div>
                                         <div className="text-right">
-                                            <p className="text-xs font-bold text-slate-400 uppercase">Doctor</p>
+                                            <p className="text-xs font-bold text-slate-400">Doctor</p>
                                             <p className="font-bold text-slate-800">Dr. {selectedAppt.doctor?.name}</p>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="space-y-2">
-                                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Clinical Reason</p>
+                                    <p className="text-[10px] font-bold text-slate-400">Clinical Reason</p>
                                     <div className="bg-blue-50 p-4 rounded-2xl border border-blue-100">
                                         <p className="text-slate-700 font-medium leading-relaxed italic">
                                             "{selectedAppt.reason || 'No specific reason provided.'}"

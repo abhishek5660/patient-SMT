@@ -29,12 +29,12 @@ const StatCard = ({ title, value, icon: Icon, color, subtext, delay, trend, onCl
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: delay / 1000 }}
         onClick={onClick}
-        className="glass-card p-6 relative overflow-hidden group hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 cursor-pointer"
+        className="glass-card p-4 sm:p-6 relative overflow-hidden group hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 cursor-pointer"
     >
         <div className={`absolute -right-4 -top-4 w-24 h-24 ${color} opacity-[0.05] rounded-full group-hover:scale-150 transition-transform duration-700`}></div>
         <div className="flex justify-between items-start relative z-10">
             <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">{title}</p>
+                <p className="text-xs font-bold text-slate-400">{title}</p>
                 <div className="flex items-baseline gap-2 mt-1">
                     <h3 className="text-3xl font-bold text-gray-900 tracking-tight">{value}</h3>
                     {trend && (
@@ -174,31 +174,31 @@ const DashboardOverview = () => {
     );
 
     return (
-        <div className="space-y-8 pb-8">
+        <div className="space-y-6 sm:space-y-8 pb-8">
             {/* Elegant Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                 >
-                    <h1 className="text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-primary to-primary-dark tracking-tight">
+                    <h1 className="text-3xl sm:text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-primary to-primary-dark tracking-tight">
                         Health Pulse
                     </h1>
-                    <p className="text-slate-500 font-medium flex items-center gap-2 mt-1">
-                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <p className="text-sm sm:text-base text-slate-500 font-medium flex items-center gap-2 mt-1">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse flex-shrink-0"></span>
                         Live health dashboard • {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}
                     </p>
                 </motion.div>
-                <div className="flex items-center gap-3">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
                     <button
                         onClick={() => navigate('/patient-dashboard/billing')}
-                        className="glass-button !bg-white !text-slate-700 border border-slate-200 shadow-none hover:bg-slate-50"
+                        className="glass-button w-full sm:w-auto !bg-white !text-slate-700 border border-slate-200 shadow-none hover:bg-slate-50 justify-center"
                     >
                         Medical Invoices
                     </button>
                     <button
                         onClick={() => navigate('/patient-dashboard/profile')}
-                        className="glass-button"
+                        className="glass-button w-full sm:w-auto justify-center"
                     >
                         Manage Profile
                     </button>
@@ -253,7 +253,7 @@ const DashboardOverview = () => {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.5 }}
-                    className="lg:col-span-2 glass-card p-8"
+                    className="lg:col-span-2 glass-card p-4 sm:p-6 lg:p-8"
                 >
                     <div className="flex flex-col md:flex-row gap-8">
                         <div className="flex-1">
@@ -269,7 +269,7 @@ const DashboardOverview = () => {
                         <div className="w-full md:w-64 space-y-6">
                             <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 group cursor-pointer hover:bg-white transition-all">
                                 <div className="flex justify-between items-center mb-1">
-                                    <span className="text-[10px] font-bold text-slate-400 uppercase">Avg. Glucose</span>
+                                    <span className="text-[10px] font-bold text-slate-400">Avg. Glucose</span>
                                     <TrendingUp size={12} className="text-rose-500" />
                                 </div>
                                 <div className="flex items-baseline gap-1">
@@ -279,7 +279,7 @@ const DashboardOverview = () => {
                             </div>
                             <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 group cursor-pointer hover:bg-white transition-all">
                                 <div className="flex justify-between items-center mb-1">
-                                    <span className="text-[10px] font-bold text-slate-400 uppercase">Blood Pressure</span>
+                                    <span className="text-[10px] font-bold text-slate-400">Blood Pressure</span>
                                     <CheckCircle2 size={12} className="text-emerald-500" />
                                 </div>
                                 <div className="flex items-baseline gap-1">
@@ -305,7 +305,7 @@ const DashboardOverview = () => {
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.6 }}
-                        className="glass-card p-6 bg-gradient-to-br from-primary-dark via-primary to-blue-600 border-none relative overflow-hidden group"
+                        className="glass-card p-4 sm:p-6 bg-gradient-to-br from-primary-dark via-primary to-blue-600 border-none relative overflow-hidden group"
                     >
                         <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-x-4 -translate-y-8 blur-3xl group-hover:scale-150 transition-transform duration-1000"></div>
                         <h2 className="text-white font-bold text-lg relative z-10 flex items-center gap-2">
@@ -322,22 +322,22 @@ const DashboardOverview = () => {
                                         <div key={appt._id} className="space-y-4">
                                             <div className="flex gap-4 items-center">
                                                 <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex flex-col items-center justify-center text-white ring-1 ring-white/30">
-                                                    <span className="text-[10px] uppercase font-black opacity-60">
+                                                    <span className="text-[10px] font-semibold opacity-60">
                                                         {new Date(appt.appointmentDate).toLocaleString('default', { month: 'short' })}
                                                     </span>
-                                                    <span className="text-2xl font-black">
+                                                    <span className="text-2xl font-semibold">
                                                         {new Date(appt.appointmentDate).getDate()}
                                                     </span>
                                                 </div>
                                                 <div className="text-white">
-                                                    <p className="font-black text-xl leading-tight">Dr. {appt.doctor?.name}</p>
+                                                    <p className="font-semibold text-xl leading-tight">Dr. {appt.doctor?.name}</p>
                                                     <p className="text-white/70 text-sm font-medium flex items-center gap-1 mt-1">
                                                         {appt.doctor?.specialization}
                                                     </p>
                                                 </div>
                                             </div>
                                             <div className="pt-4 flex items-center justify-between border-t border-white/20">
-                                                <div className="flex items-center gap-1.5 text-white/80 font-bold text-xs uppercase tracking-wide">
+                                                <div className="flex items-center gap-1.5 text-white/80 font-bold text-xs tracking-wide">
                                                     <Clock size={14} />
                                                     {new Date(appt.appointmentDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                                 </div>
@@ -357,7 +357,7 @@ const DashboardOverview = () => {
                                 <p className="text-sm font-medium">No upcoming appointments found. Stay ahead of your health schedule!</p>
                                 <button
                                     onClick={() => navigate('/patient-dashboard/appointments')}
-                                    className="w-full py-3 bg-white text-primary font-black rounded-xl hover:scale-[1.02] transition-transform"
+                                    className="w-full py-3 bg-white text-primary font-semibold rounded-xl hover:scale-[1.02] transition-transform"
                                 >
                                     Book Now
                                 </button>
@@ -370,9 +370,9 @@ const DashboardOverview = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.7 }}
-                        className="glass-card p-6 flex-grow"
+                        className="glass-card p-4 sm:p-6 flex-grow"
                     >
-                        <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-6 flex items-center justify-between">
+                        <h4 className="text-xs font-semibold text-slate-400 mb-6 flex items-center justify-between">
                             Recent Activity
                             <button
                                 onClick={() => navigate('/patient-dashboard/reports')}

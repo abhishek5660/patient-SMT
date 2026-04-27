@@ -76,7 +76,9 @@ exports.updateUserProfile = async (req, res) => {
 
         // Patient Strings
         if (req.body.bloodGroup !== undefined) user.bloodGroup = req.body.bloodGroup;
-        if (req.body.dob !== undefined) user.dob = req.body.dob;
+        if (req.body.dob !== undefined) {
+            user.dob = req.body.dob === '' ? null : req.body.dob;
+        }
 
         // Handle nested object
         if (req.body['emergencyContact[name]'] !== undefined || req.body['emergencyContact[phone]'] !== undefined) {

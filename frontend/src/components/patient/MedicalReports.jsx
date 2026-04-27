@@ -198,7 +198,7 @@ const MedicalReports = () => {
 
             {/* Upload Modal (Simplified in-page for now) */}
             {showUploadModal && (
-                <div className="glass-card p-6 border-primary/20 bg-primary/5 animate-in slide-in-from-top-4 duration-300">
+                <div className="glass-card p-4 sm:p-6 border-primary/20 bg-primary/5 animate-in slide-in-from-top-4 duration-300">
                     <div className="flex items-center justify-between mb-6">
                         <h3 className="text-xl font-bold flex items-center gap-2">
                             <Upload size={22} className="text-primary" />
@@ -244,11 +244,11 @@ const MedicalReports = () => {
                                 required
                             />
                         </div>
-                        <div className="md:col-span-3 flex justify-end">
+                        <div className="md:col-span-3 flex flex-col sm:flex-row justify-end mt-2">
                             <button
                                 type="submit"
                                 disabled={uploading}
-                                className="glass-button min-w-[150px] flex items-center justify-center gap-2"
+                                className="glass-button w-full sm:w-auto min-w-[150px] flex items-center justify-center gap-2"
                             >
                                 {uploading ? (
                                     <>

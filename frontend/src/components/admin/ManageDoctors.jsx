@@ -123,7 +123,7 @@ const ManageDoctors = () => {
             {/* Header Section */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pb-4 border-b border-slate-200">
                 <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-                    <h2 className="text-3xl font-black text-slate-800 tracking-tight">Manage Doctors</h2>
+                    <h2 className="text-3xl font-semibold text-slate-800 tracking-tight">Manage Doctors</h2>
                     <p className="text-slate-500 mt-1 font-medium">Oversee medical staff and add new practitioners</p>
                 </motion.div>
 
@@ -157,10 +157,10 @@ const ManageDoctors = () => {
                     <table className="w-full text-left border-collapse">
                         <thead>
                             <tr className="bg-slate-50/80 border-b border-slate-200">
-                                <th className="px-6 py-5 text-xs font-bold text-slate-500 uppercase tracking-widest w-[35%]">Practitioner</th>
-                                <th className="px-6 py-5 text-xs font-bold text-slate-500 uppercase tracking-widest">Contact Info</th>
-                                <th className="px-6 py-5 text-xs font-bold text-slate-500 uppercase tracking-widest text-center">Status / Spec</th>
-                                <th className="px-6 py-5 text-xs font-bold text-slate-500 uppercase tracking-widest text-right">Actions</th>
+                                <th className="px-6 py-5 text-xs font-bold text-slate-500 w-[35%]">Practitioner</th>
+                                <th className="px-6 py-5 text-xs font-bold text-slate-500">Contact Info</th>
+                                <th className="px-6 py-5 text-xs font-bold text-slate-500 text-center">Status / Spec</th>
+                                <th className="px-6 py-5 text-xs font-bold text-slate-500 text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100/50">
@@ -265,7 +265,7 @@ const ManageDoctors = () => {
                         >
                             <div className="p-6 sm:p-8 flex justify-between items-center bg-white/50 border-b border-slate-100">
                                 <div>
-                                    <h3 className="text-2xl font-black text-slate-800 tracking-tight">{isEditMode ? 'Edit Practitioner' : 'New Practitioner'}</h3>
+                                    <h3 className="text-2xl font-semibold text-slate-800 tracking-tight">{isEditMode ? 'Edit Practitioner' : 'New Practitioner'}</h3>
                                     <p className="text-sm font-medium text-slate-500 mt-1">{isEditMode ? 'Update doctor information' : 'Add a new doctor to the platform'}</p>
                                 </div>
                                 <button onClick={() => setIsModalOpen(false)} className="p-2.5 text-slate-400 hover:text-slate-600 bg-white shadow-sm border border-slate-200 hover:bg-slate-50 rounded-full transition-all">
@@ -277,7 +277,7 @@ const ManageDoctors = () => {
                                 <div className="space-y-4">
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div>
-                                            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1">Full Name</label>
+                                            <label className="block text-xs font-bold text-slate-500 tracking-wider mb-2 ml-1">Full Name</label>
                                             <input
                                                 type="text" required className="input-field"
                                                 value={newDoctor.name} onChange={(e) => setNewDoctor({ ...newDoctor, name: e.target.value })}
@@ -285,7 +285,7 @@ const ManageDoctors = () => {
                                             />
                                         </div>
                                         <div>
-                                            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1">Email Space</label>
+                                            <label className="block text-xs font-bold text-slate-500 tracking-wider mb-2 ml-1">Email Space</label>
                                             <input
                                                 type="email" required className="input-field"
                                                 value={newDoctor.email} onChange={(e) => setNewDoctor({ ...newDoctor, email: e.target.value })}
@@ -296,7 +296,7 @@ const ManageDoctors = () => {
                                     
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div>
-                                            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1">Specialization</label>
+                                            <label className="block text-xs font-bold text-slate-500 tracking-wider mb-2 ml-1">Specialization</label>
                                             <input
                                                 type="text" required className="input-field"
                                                 value={newDoctor.specialization} onChange={(e) => setNewDoctor({ ...newDoctor, specialization: e.target.value })}
@@ -304,7 +304,7 @@ const ManageDoctors = () => {
                                             />
                                         </div>
                                         <div>
-                                            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1">Experience (Years)</label>
+                                            <label className="block text-xs font-bold text-slate-500 tracking-wider mb-2 ml-1">Experience (Years)</label>
                                             <input
                                                 type="number" className="input-field"
                                                 value={newDoctor.experience} onChange={(e) => setNewDoctor({ ...newDoctor, experience: e.target.value })}
@@ -315,7 +315,7 @@ const ManageDoctors = () => {
 
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div>
-                                            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1">Consultation Fee ($)</label>
+                                            <label className="block text-xs font-bold text-slate-500 tracking-wider mb-2 ml-1">Consultation Fee ($)</label>
                                             <input
                                                 type="number" required className="input-field"
                                                 value={newDoctor.consultationFee} onChange={(e) => setNewDoctor({ ...newDoctor, consultationFee: e.target.value })}
@@ -323,7 +323,7 @@ const ManageDoctors = () => {
                                             />
                                         </div>
                                         <div>
-                                            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1">{isEditMode ? 'New Password (Optional)' : 'Initial Password'}</label>
+                                            <label className="block text-xs font-bold text-slate-500 tracking-wider mb-2 ml-1">{isEditMode ? 'New Password (Optional)' : 'Initial Password'}</label>
                                             <input
                                                 type="password" required={!isEditMode} className="input-field"
                                                 value={newDoctor.password} onChange={(e) => setNewDoctor({ ...newDoctor, password: e.target.value })}
@@ -332,7 +332,7 @@ const ManageDoctors = () => {
                                         </div>
                                     </div>
                                     <div>
-                                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1">Qualifications</label>
+                                        <label className="block text-xs font-bold text-slate-500 tracking-wider mb-2 ml-1">Qualifications</label>
                                         <input
                                             type="text" className="input-field"
                                             value={newDoctor.qualifications} onChange={(e) => setNewDoctor({ ...newDoctor, qualifications: e.target.value })}

@@ -42,26 +42,26 @@ const PatientDetailModal = ({ patient, onClose, navigate }) => {
                             )}
                         </div>
                         <div className="mt-4 flex flex-col gap-2">
-                            <span className="flex items-center justify-center gap-1.5 text-xs font-bold text-teal-700 bg-teal-50 py-1.5 rounded-xl border border-teal-100 uppercase tracking-wide">
+                            <span className="flex items-center justify-center gap-1.5 text-xs font-bold text-teal-700 bg-teal-50 py-1.5 rounded-xl border border-teal-100 tracking-wide">
                                 <div className="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></div> Active
                             </span>
                         </div>
                     </div>
 
                     <div className="flex-1 w-full">
-                        <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight uppercase">{patient.name}</h2>
+                        <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">{patient.name}</h2>
                         
                         <div className="flex flex-wrap items-center gap-4 mt-3">
                             <span className="flex items-center gap-1.5 text-sm font-semibold text-gray-600 bg-gray-50 px-3 py-1.5 rounded-xl border border-gray-100">
                                 <Calendar size={16} className="text-gray-400" /> {patient.age} Years Old
                             </span>
-                            <span className="flex items-center gap-1.5 text-sm font-semibold text-gray-600 bg-gray-50 px-3 py-1.5 rounded-xl border border-gray-100 uppercase">
+                            <span className="flex items-center gap-1.5 text-sm font-semibold text-gray-600 bg-gray-50 px-3 py-1.5 rounded-xl border border-gray-100">
                                 <User size={16} className="text-gray-400" /> {patient.gender}
                             </span>
                         </div>
 
                         <div className="mt-8 space-y-4">
-                            <h3 className="text-sm font-bold text-gray-400 uppercase tracking-widest border-b border-gray-100 pb-2">Contact Information</h3>
+                            <h3 className="text-sm font-bold text-gray-400 border-b border-gray-100 pb-2">Contact Information</h3>
                             <div className="flex items-center gap-4 text-gray-700 font-medium">
                                 <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-500 flex-shrink-0">
                                     <Phone size={18} />
@@ -134,7 +134,7 @@ const PatientCard = ({ patient, navigate, onSelect }) => (
                 </div>
 
                 <div className="flex flex-col items-end">
-                    <span className="text-[10px] font-bold text-teal-600 bg-teal-50 px-3 py-1 rounded-full border border-teal-100 uppercase tracking-widest mb-2">
+                    <span className="text-[10px] font-bold text-teal-600 bg-teal-50 px-3 py-1 rounded-full border border-teal-100 mb-2">
                         Active Patient
                     </span>
                     <button 
@@ -148,13 +148,13 @@ const PatientCard = ({ patient, navigate, onSelect }) => (
             </div>
 
             <div className="mb-6">
-                <h3 className="text-2xl font-bold text-gray-900 group-hover:text-teal-700 transition-colors uppercase tracking-tight truncate" title={patient.name}>{patient.name}</h3>
+                <h3 className="text-2xl font-bold text-gray-900 group-hover:text-teal-700 transition-colors tracking-tight truncate" title={patient.name}>{patient.name}</h3>
                 <div className="flex items-center gap-3 mt-1.5">
                     <span className="text-sm font-semibold text-gray-500 flex items-center gap-1">
                         <Calendar size={14} /> {patient.age} Yrs
                     </span>
                     <div className="w-1 h-1 rounded-full bg-gray-300"></div>
-                    <span className="text-sm font-semibold text-gray-500 uppercase">{patient.gender}</span>
+                    <span className="text-sm font-semibold text-gray-500">{patient.gender}</span>
                 </div>
             </div>
 
@@ -264,7 +264,7 @@ const MyPatients = () => {
                 {loading ? (
                     <div className="py-32 flex flex-col items-center gap-4">
                         <div className="w-12 h-12 border-4 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
-                        <p className="text-gray-500 font-bold tracking-wide uppercase text-xs">Loading Patients...</p>
+                        <p className="text-gray-500 font-bold tracking-wide text-xs">Loading Patients...</p>
                     </div>
                 ) : (
                     <>

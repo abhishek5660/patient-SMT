@@ -125,7 +125,7 @@ const MyPrescriptions = () => {
                     </h2>
                     <p className="text-text-secondary mt-1">View and download your digital medical prescriptions</p>
                 </div>
-                <div className="relative flex-grow md:max-w-xs">
+                <div className="relative w-full md:max-w-xs mt-4 md:mt-0">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" size={18} />
                     <input
                         type="text"
@@ -152,7 +152,7 @@ const MyPrescriptions = () => {
                     filteredPrescriptions.map((script) => (
                         <div key={script._id} className="glass-card group hover:shadow-2xl hover:scale-[1.01] transition-all duration-300 overflow-hidden flex flex-col">
                             {/* Card Header */}
-                            <div className="p-6 border-b border-slate-50 bg-gradient-to-r from-white to-slate-50/50 flex justify-between items-start">
+                            <div className="p-4 sm:p-6 border-b border-slate-50 bg-gradient-to-r from-white to-slate-50/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                                 <div className="flex gap-4">
                                     <div className="w-12 h-12 rounded-xl bg-primary-light flex items-center justify-center text-primary-dark shadow-sm">
                                         <User size={24} />
@@ -165,7 +165,7 @@ const MyPrescriptions = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="text-right">
+                                <div className="text-left sm:text-right w-full sm:w-auto mt-2 sm:mt-0">
                                     <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-white border border-slate-100 rounded-full text-xs font-bold text-slate-500 shadow-sm">
                                         <Calendar size={12} className="text-primary" />
                                         {new Date(script.date).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })}
@@ -175,7 +175,7 @@ const MyPrescriptions = () => {
 
                             {/* Card Content - Medicine List */}
                             <div className="p-6 flex-grow space-y-4 bg-white/40">
-                                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                                <h4 className="text-xs font-bold tracking-wider text-slate-400 flex items-center gap-2">
                                     <Pill size={14} /> Prescribed Medicines
                                 </h4>
                                 <div className="grid grid-cols-1 gap-3">
@@ -206,14 +206,14 @@ const MyPrescriptions = () => {
                                         <div className="absolute top-0 right-0 p-2 opacity-10">
                                             <FileText size={40} className="text-warning" />
                                         </div>
-                                        <span className="block text-xs font-bold text-warning/80 uppercase mb-1">Doctor's Note</span>
+                                        <span className="block text-xs font-bold text-warning/80 mb-1">Doctor's Note</span>
                                         <p className="text-sm text-gray-700 leading-relaxed italic">"{script.notes}"</p>
                                     </div>
                                 )}
                             </div>
 
                             {/* Card Actions */}
-                            <div className="p-6 pt-0 mt-auto">
+                            <div className="p-4 sm:p-6 pt-0 mt-auto">
                                 <button
                                     onClick={() => downloadPDF(script)}
                                     className="glass-button w-full flex items-center justify-center gap-2 group/btn"
